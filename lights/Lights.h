@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2026 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,44 +16,33 @@
 
 #pragma once
 
-#define LOG_TAG "lights-xiaomi_mithorium"
-
 #include <aidl/android/hardware/light/BnLights.h>
+
+#include <mutex>
+#include <string>
+#include <vector>
 
 namespace aidl {
 namespace android {
 namespace hardware {
 namespace light {
 
-enum led_type {
-    RED,
-    GREEN,
-    BLUE,
-    WHITE,
-};
-
 class Lights : public BnLights {
-public:
+  public:
     Lights();
 
     ndk::ScopedAStatus setLightState(int id, const HwLightState& state) override;
-    ndk::ScopedAStatus getLights(std::vector<HwLight>* types) override;
+    ndk::ScopedAStatus getLights(std::vector<HwLight>* lights) override;
 
-private:
-    void setSpeakerLightLocked(const HwLightState& state);
-    void handleSpeakerBatteryLocked();
+  private:
+    void setBacklight(const HwLightState& state);
+    void setButtons(const HwLightState& state);
+    void updateIndicatorLocked();
+    void setIndicatorLocked(const HwLightState& state);
 
-    bool setLedBreath(led_type led, uint32_t value);
-    bool setLedBrightness(led_type led, uint32_t value);
-
-    bool IsLit(uint32_t color);
-    uint32_t RgbaToBrightness(uint32_t color);
-    bool WriteToFile(const std::string& path, uint32_t content);
-
-    std::string mBacklightNode;
-    bool mButtonExists;
-    bool mWhiteLed;
-    bool mBreath;
+    int mLcdMaxBrightness;
+    std::mutex mLock;
+    HwLightState mAttention;
     HwLightState mNotification;
     HwLightState mBattery;
 };

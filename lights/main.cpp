@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2026 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ int main() {
 
     const std::string instance = std::string() + Lights::descriptor + "/default";
     binder_status_t status = AServiceManager_addService(lights->asBinder().get(), instance.c_str());
-    CHECK(status == STATUS_OK);
+    CHECK_EQ(status, STATUS_OK);
 
     ABinderProcess_joinThreadPool();
-    return EXIT_FAILURE;  // should not reached
+    return EXIT_FAILURE;  // should not be reached
 }
