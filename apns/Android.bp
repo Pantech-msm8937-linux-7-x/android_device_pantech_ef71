@@ -1,0 +1,43 @@
+//
+// Copyright (C) 2026 The LineageOS Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// The Lineage APN list with the initial attach APN of the Korean VoLTE
+// carriers set to the IMS APN and the internet APNs of the Korean carriers
+// set to IPv4v6, bind mounted over it by init.ef71.rc
+genrule {
+    name: "ef71_apns_conf_gen",
+    srcs: [":apns-conf"],
+    out: ["ef71_apns-conf.xml"],
+    cmd: "sed -e '/mcc=\"450\" mnc=\"08\" carrier=\"KT IA\"/s/ apn=\"[^\"]*\"/ apn=\"ims\"/' " +
+        "-e '/mcc=\"450\" mnc=\"06\" carrier=\"LG uplus IA\"/s/ apn=\"[^\"]*\"/ apn=\"ims\"/' " +
+        "-e '/mcc=\"450\" mnc=\"05\" carrier=\"SKT IA\"/s/ apn=\"[^\"]*\"/ apn=\"ims\"/' " +
+        "-e '/mcc=\"450\" mnc=\"08\" carrier=\"KT\" apn=\"lte.ktfwing.com\"/s/ protocol=\"[^\"]*\"//g; /mcc=\"450\" mnc=\"08\" carrier=\"KT\" apn=\"lte.ktfwing.com\"/s/ roaming_protocol=\"[^\"]*\"//g; /mcc=\"450\" mnc=\"08\" carrier=\"KT\" apn=\"lte.ktfwing.com\"/s| />| protocol=\"IPV4V6\" roaming_protocol=\"IPV4V6\" />|' " +
+        "-e '/mcc=\"450\" mnc=\"05\" carrier=\"SKT LTE INTERNET\" apn=\"lte.sktelecom.com\"/s/ protocol=\"[^\"]*\"//g; /mcc=\"450\" mnc=\"05\" carrier=\"SKT LTE INTERNET\" apn=\"lte.sktelecom.com\"/s/ roaming_protocol=\"[^\"]*\"//g; /mcc=\"450\" mnc=\"05\" carrier=\"SKT LTE INTERNET\" apn=\"lte.sktelecom.com\"/s| />| protocol=\"IPV4V6\" roaming_protocol=\"IPV4V6\" />|' " +
+        "-e '/mcc=\"450\" mnc=\"06\" carrier=\"LG uplus\" apn=\"internet.lguplus.co.kr\"/s/ protocol=\"[^\"]*\"//g; /mcc=\"450\" mnc=\"06\" carrier=\"LG uplus\" apn=\"internet.lguplus.co.kr\"/s/ roaming_protocol=\"[^\"]*\"//g; /mcc=\"450\" mnc=\"06\" carrier=\"LG uplus\" apn=\"internet.lguplus.co.kr\"/s| />| protocol=\"IPV4V6\" roaming_protocol=\"IPV4V6\" />|' " +
+        "$(in) > $(out) && " +
+        "grep -q 'mcc=\"450\" mnc=\"08\" carrier=\"KT IA\" apn=\"ims\"' $(out) && " +
+        "grep -q 'mcc=\"450\" mnc=\"06\" carrier=\"LG uplus IA\" apn=\"ims\"' $(out) && " +
+        "grep -q 'mcc=\"450\" mnc=\"05\" carrier=\"SKT IA\" apn=\"ims\"' $(out) && " +
+        "grep -q 'mcc=\"450\" mnc=\"08\" carrier=\"KT\" apn=\"lte.ktfwing.com\".* protocol=\"IPV4V6\" roaming_protocol=\"IPV4V6\"' $(out) && " +
+        "grep -q 'mcc=\"450\" mnc=\"05\" carrier=\"SKT LTE INTERNET\" apn=\"lte.sktelecom.com\".* protocol=\"IPV4V6\" roaming_protocol=\"IPV4V6\"' $(out) && " +
+        "grep -q 'mcc=\"450\" mnc=\"06\" carrier=\"LG uplus\" apn=\"internet.lguplus.co.kr\".* protocol=\"IPV4V6\" roaming_protocol=\"IPV4V6\"' $(out)",
+}
+
+prebuilt_etc {
+    name: "ef71_apns-conf.xml",
+    src: ":ef71_apns_conf_gen",
+    vendor: true,
+}
