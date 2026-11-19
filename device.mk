@@ -432,9 +432,6 @@ PRODUCT_BOOT_JARS += \
 EF71_PRODUCT_PACKAGES += \
     android.hardware.thermal@2.0-service.qti.ef71
 
-# Trust
-EF71_PRODUCT_PACKAGES += \
-    vendor.lineage.trust@1.0-service
 
 # USB
 EF71_PRODUCT_PACKAGES += \
