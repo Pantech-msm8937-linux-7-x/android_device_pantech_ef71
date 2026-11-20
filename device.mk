@@ -340,8 +340,7 @@ EF71_PRODUCT_PACKAGES += \
     android.hardware.secure_element@1.1.vendor \
     android.hardware.secure_element@1.2.vendor \
     libshim_qcrild \
-    libxml2 \
-    subsystem_state_notifier
+    libxml2
 
 # Resolution
 PRODUCT_AAPT_CONFIG := normal
