@@ -183,5 +183,6 @@ bluetooth.profile.pbap.server.enabled?=true
 
 ro.hardware.egl=mesa
 ro.hardware.gralloc=minigbm_msm
+vendor.minigbm.debug=nocompression
 ro.hardware.hwcomposer=drm
 ro.opengles.version=196608
