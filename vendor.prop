@@ -195,6 +195,11 @@ ro.opengles.version=196608
 # DMA-BUF heaps.
 debug.c2.use_dmabufheaps=1
 
+# Persistent input surfaces, which the camera records through, come from the
+# OMX service unless Codec2 makes them, and there is no OMX service: have the
+# framework make them in process.
+debug.stagefright.c2inputsurface=-1
+
 ro.vendor.v4l2_codec2.decode_concurrent_instances=8
 ro.vendor.v4l2_codec2.encode_concurrent_instances=8
 debug.stagefright.c2-poolmask=0xf50000
