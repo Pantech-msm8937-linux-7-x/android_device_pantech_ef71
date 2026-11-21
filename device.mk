@@ -268,6 +268,18 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml
 
+# Video: the Venus codecs of the mainline kernel through the V4L2 Codec2 HAL.
+# Their codec list, media/media_codecs_c2_venus.xml, goes to
+# $(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_c2.xml once decoding is clean.
+PRODUCT_SOONG_NAMESPACES += external/v4l2_codec2
+
+EF71_PRODUCT_PACKAGES += \
+    android.hardware.media.c2@1.2-service-v4l2 \
+    libc2plugin_store
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/seccomp/android.hardware.media.c2-extended-seccomp_policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/android.hardware.media.c2-extended-seccomp_policy
+
 EF71_PRODUCT_PACKAGES += \
     libavservices_minijail.vendor
 

@@ -194,3 +194,7 @@ ro.opengles.version=196608
 # pick its ION allocator, whose buffers it then fails to map. Keep it on the
 # DMA-BUF heaps.
 debug.c2.use_dmabufheaps=1
+
+ro.vendor.v4l2_codec2.decode_concurrent_instances=8
+ro.vendor.v4l2_codec2.encode_concurrent_instances=8
+debug.stagefright.c2-poolmask=0xf50000
