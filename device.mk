@@ -268,7 +268,7 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml
 
-# Video: the Venus decoders of the mainline kernel through the V4L2 Codec2 HAL
+# Video: the Venus codecs of the mainline kernel through the V4L2 Codec2 HAL
 PRODUCT_SOONG_NAMESPACES += external/v4l2_codec2
 
 PRODUCT_COPY_FILES += \
