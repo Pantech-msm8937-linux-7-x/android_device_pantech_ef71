@@ -7,6 +7,12 @@ on early-init
 on post-fs-data
     setprop sys.use_memfd true
 
+# The console of the kernel is the framebuffer (fbcon), not a UART. The shell
+# init.rc starts on it in debuggable builds serves no one there, and with it
+# running the system warns of a serial console slowing the device down.
+on init && property:ro.debuggable=1
+    stop console
+
 # Modem: rmtfs serves the EFS partitions and boots the modem once ready.
 # Read only for now, the EFS holds the IMEI and RF calibration.
 service vendor.rmtfs /vendor/bin/rmtfs -o /dev/block/by-name -P -r -s
