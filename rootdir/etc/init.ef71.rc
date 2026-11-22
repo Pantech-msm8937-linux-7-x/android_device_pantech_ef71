@@ -227,7 +227,7 @@ on early-boot
     # notification, which is not replayed: register it before the ADSP boots
     exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules \
         slim-qcom-ngd-ctrl \
-        qcom_pd_mapper qcom_memshare qcom_q6v5_mss qcom_q6v5_pas qcom_bam_dmux rmnet \
+        qcom_pd_mapper qcom_memshare qcom_q6v5_mss qcom_q6v5_pas qcom_bam_dmux rmnet xt_quota2 \
         qcom_wcnss_pil wcnss_ctrl wcn36xx btqcomsmd \
         venus-core venus-dec venus-enc \
         apr q6core q6afe q6afe-dai q6afe-clocks q6asm q6asm-dai q6adm q6routing \
