@@ -39,6 +39,9 @@ TARGET_NO_BOOTLOADER := true
 BOARD_GPU_DRIVERS := freedreno
 
 # Kernel (mainline)
+# The upstream rmnet driver (over BAM-DMUX), which rmnetctl drives over
+# rtnetlink, not the old rmnet_data one
+TARGET_KERNEL_HAS_UPSTREAM_RMNET := true
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom loop.max_part=7 printk.devkmsg=on
 BOARD_KERNEL_CMDLINE += androidboot.bootdevice=7824900.mmc androidboot.boot_devices=soc@0/7824900.mmc
@@ -49,6 +52,8 @@ BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware
 # Bring-up; keep SELinux audit spam out of the kernel log
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive audit=0
+# BAM-DMUX as the rmnet_bam devices netmgrd configures
+BOARD_KERNEL_CMDLINE += qcom_bam_dmux.rmnet_bam=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 # The Pantech aboot picks the DTB appended to the kernel by board id
 BOARD_KERNEL_APPEND_DTBS := qcom/msm8937-pantech-ef71.dtb
@@ -178,7 +183,7 @@ ENABLE_VENDOR_RIL_SERVICE := true
 
 # Shims (the vendor tree lives in /system/vendor)
 TARGET_LD_SHIM_LIBS := \
-    /system/vendor/bin/hw/qcrild|libshim_qcrild.so
+    /system/vendor/bin/hw/qcrild|libshim_qcrild.so:/system/vendor/bin/netmgrd|libshim_netmgrd.so
 
 # Security patch level
 VENDOR_SECURITY_PATCH := 2019-05-01

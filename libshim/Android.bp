@@ -92,3 +92,12 @@ cc_library_shared {
     shared_libs: ["libdl", "liblog"],
     cflags: ["-Wall", "-Werror"],
 }
+
+// netmgrd: the rtnetlink rmnet path on the mainline kernel
+cc_library_shared {
+    name: "libshim_netmgrd",
+    vendor: true,
+    compile_multilib: "64",
+    srcs: ["netmgrd_kver.c"],
+    cflags: ["-Wall", "-Werror"],
+}
