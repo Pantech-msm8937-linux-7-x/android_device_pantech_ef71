@@ -18,6 +18,8 @@
 
 #include "Lights.h"
 
+#include <algorithm>
+
 #include <android-base/file.h>
 #include <android-base/logging.h>
 #include <android-base/parseint.h>
@@ -40,9 +42,10 @@ constexpr const char* kLcdMaxBrightness = "/sys/class/leds/lcd-backlight/max_bri
 
 /*
  * The EF71 has one LP5523 for the front indicator (a left and a right RGB
- * LED) and the menu and back key backlights. The Pantech driver takes the
- * channel brightnesses as they are written and applies them when a command
- * is written to channel 8 (PAN_LED_LP5523_BLINK_CMD).
+ * LED) and the menu and back key backlights. Pantech's driver, as on the
+ * stock kernel, takes the channel brightnesses as they are written and
+ * applies them as the command written to channel 8 says
+ * (PAN_LED_LP5523_BLINK_CMD), as the stock lights HAL wrote them.
  */
 enum Lp5523Channel {
     kLeftGreen = 0,
@@ -57,10 +60,20 @@ enum Lp5523Channel {
 };
 
 enum Lp5523Command {
-    kCmdKeys = 1,   // PWM_TK_ON_OFF: apply the menu and back key brightness
-    kCmdSolid = 3,  // PWM_HOMEKEY_ON_OFF: apply the indicator brightness
-    kCmdBlink = 8,  // DIMMING_ON_OFF_COLOR: blink the indicator
+    kCmdOff = 0,             // EF59_LED_OFF: the indicator off
+    kCmdKeys = 1,            // PWM_TK_ON_OFF: apply the key backlights
+    kCmdSolid = 3,           // PWM_HOMEKEY_ON_OFF: the color, steady
+    kCmdBreathe = 4,         // DIMMING_HOMEKEY_ON_OFF: the color, dimming in and out
+    kCmdBlinkTimer = 10,     // DIMMING_ON_COLOR_TIMER: blink, off time in 484 ms
+    kCmdBlinkShortTimer = 11,  // DIMMING_ON_OFF_SHORT_TIMER: blink, off time in 15 ms
+    kCmdGreen2mA = 102,      // EF59_LED_SET_GREEN_LIGHT_VALUE_20
+    kCmdGreen4mA = 103,      // EF59_LED_SET_GREEN_LIGHT_VALUE_40
+    kCmdRedCharging = 200,   // DIMMING_RED_CHARGING: red dimming while charging
 };
+
+// The blink timings, in the right green and blue channels (at most 61)
+constexpr int kMaxTiming = 61;
+constexpr uint32_t kDarkGreen = 0x80;
 
 std::string channelPath(int channel) {
     return "/sys/class/leds/lp5523:channel" + std::to_string(channel) + "/brightness";
@@ -175,15 +188,26 @@ void Lights::setButtons(const HwLightState& state) {
 
 void Lights::updateIndicatorLocked() {
     if (isLit(mAttention)) {
-        setIndicatorLocked(mAttention);
+        setIndicatorLocked(mAttention, false);
     } else if (isLit(mNotification)) {
-        setIndicatorLocked(mNotification);
+        setIndicatorLocked(mNotification, false);
     } else {
-        setIndicatorLocked(mBattery);
+        setIndicatorLocked(mBattery, true);
     }
 }
 
-void Lights::setIndicatorLocked(const HwLightState& state) {
+// The current of the green LEDs: 2 mA for the dark green of a full battery,
+// as the stock HAL had it, 4 mA otherwise
+void Lights::setGreenCurrentLocked(uint32_t green) {
+    int cmd = green == kDarkGreen ? kCmdGreen2mA : kCmdGreen4mA;
+
+    if (cmd != mGreenCurrentCmd) {
+        writeChannel(kCommand, cmd);
+        mGreenCurrentCmd = cmd;
+    }
+}
+
+void Lights::setIndicatorLocked(const HwLightState& state, bool battery) {
     uint32_t alpha = (state.color >> 24) & 0xff;
     uint32_t red = (state.color >> 16) & 0xff;
     uint32_t green = (state.color >> 8) & 0xff;
@@ -195,18 +219,41 @@ void Lights::setIndicatorLocked(const HwLightState& state) {
         blue = blue * alpha / 0xff;
     }
 
+    if (!red && !green && !blue) {
+        writeChannel(kCommand, kCmdOff);
+        return;
+    }
+
+    setGreenCurrentLocked(green);
+
     bool blink = (state.flashMode == FlashMode::TIMED || state.flashMode == FlashMode::HARDWARE) &&
                  state.flashOnMs > 0 && state.flashOffMs > 0;
 
-    // The blink program mixes at most two colors: drop the weakest of three
-    if (blink && red && green && blue && red < 0xff && green < 0xff && blue < 0xff) {
-        if (red <= green && red <= blue) {
-            red = 0;
-        } else if (green <= red && green <= blue) {
-            green = 0;
+    if (blink) {
+        // The color on the left channels, the timings on the right ones
+        int cmd, off;
+
+        if (state.flashOffMs >= 485) {
+            cmd = kCmdBlinkTimer;
+            off = state.flashOffMs / 484;
         } else {
-            blue = 0;
+            cmd = kCmdBlinkShortTimer;
+            off = state.flashOffMs / 15;
         }
+        writeChannel(kLeftRed, red);
+        writeChannel(kLeftGreen, green);
+        writeChannel(kLeftBlue, blue);
+        writeChannel(kRightRed, 0);
+        writeChannel(kRightGreen, std::min(state.flashOnMs / 15, kMaxTiming));
+        writeChannel(kRightBlue, std::min(off, kMaxTiming));
+        writeChannel(kCommand, cmd);
+        return;
+    }
+
+    // While charging, the stock indicator dims red in and out; full, it is green
+    if (battery && red && !(green > red)) {
+        writeChannel(kCommand, kCmdRedCharging);
+        return;
     }
 
     writeChannel(kLeftRed, red);
@@ -215,7 +262,8 @@ void Lights::setIndicatorLocked(const HwLightState& state) {
     writeChannel(kRightRed, red);
     writeChannel(kRightGreen, green);
     writeChannel(kRightBlue, blue);
-    writeChannel(kCommand, blink ? kCmdBlink : kCmdSolid);
+    // The attention light (incoming calls) dims in and out, as on the stock
+    writeChannel(kCommand, &state == &mAttention ? kCmdBreathe : kCmdSolid);
 }
 
 }  // namespace light

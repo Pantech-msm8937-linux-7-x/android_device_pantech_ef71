@@ -38,13 +38,15 @@ class Lights : public BnLights {
     void setBacklight(const HwLightState& state);
     void setButtons(const HwLightState& state);
     void updateIndicatorLocked();
-    void setIndicatorLocked(const HwLightState& state);
+    void setIndicatorLocked(const HwLightState& state, bool battery);
+    void setGreenCurrentLocked(uint32_t green);
 
     int mLcdMaxBrightness;
     std::mutex mLock;
     HwLightState mAttention;
     HwLightState mNotification;
     HwLightState mBattery;
+    int mGreenCurrentCmd = -1;
 };
 
 }  // namespace light
