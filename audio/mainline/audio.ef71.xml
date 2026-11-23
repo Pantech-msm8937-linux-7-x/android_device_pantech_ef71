@@ -140,8 +140,9 @@
     <!--
          The camcorder records from the handset microphone as on the vendor
          software, where AMIC4 only served as the second microphone of
-         speakerphone and noise suppression. Its own path on AMIC4 also
-         stayed applied to later recordings from the built-in microphone.
+         speakerphone and noise suppression. (A device without an "off"
+         path needs the configmgr fix that releases it, or the mux keeps
+         the value of the input device enabled last.)
     -->
     <device name="back mic">
         <path name="on">
