@@ -332,55 +332,11 @@ vendor/lib64/vendor.qti.gnss@1.2.so
 vendor/lib64/vendor.qti.gnss@2.0.so
 vendor/lib64/vendor.qti.gnss@2.1.so
 
-# Graphics - from TA-1024
-vendor/lib/hw/vulkan.msm8937.so
-vendor/lib/libadreno_utils.so
-vendor/lib/libbccQTI.so
+# Graphics - C2D for mm-camera (c2d module, imglib), from LA.UM.9.6.3.r1-06200-89xx.0
 vendor/lib/libC2D2.so
 vendor/lib/libc2d30-a3xx.so
 vendor/lib/libc2d30_bltlib.so
-vendor/lib/libCB.so
 vendor/lib/libgsl.so
-vendor/lib/libhdr_tm.so
-vendor/lib/libllvm-glnext.so
-vendor/lib/libllvm-qcom.so
-vendor/lib/libmm-hdcpmgr.so
-vendor/lib/libOpenCL.so
-vendor/lib/librs_adreno.so
-vendor/lib/librs_adreno_sha1.so
-vendor/lib/libRSDriver_adreno.so
-vendor/lib/libscalar.so
-vendor/lib64/hw/vulkan.msm8937.so
-vendor/lib64/libadreno_utils.so
-vendor/lib64/libbccQTI.so
-vendor/lib64/libC2D2.so
-vendor/lib64/libc2d30-a3xx.so
-vendor/lib64/libc2d30_bltlib.so
-vendor/lib64/libCB.so
-vendor/lib64/libgsl.so
-vendor/lib64/libhdr_tm.so
-vendor/lib64/libllvm-glnext.so
-vendor/lib64/libllvm-qcom.so
-vendor/lib64/libmm-hdcpmgr.so
-vendor/lib64/libOpenCL.so
-vendor/lib64/librs_adreno.so
-vendor/lib64/librs_adreno_sha1.so
-vendor/lib64/libRSDriver_adreno.so
-vendor/lib64/libscalar.so
-
-# Graphics - SDM - from TA-1024
-lib/libsdm-disp-apis.so
-lib64/libsdm-disp-apis.so
-vendor/lib/libsdm-color.so
-vendor/lib/libsdm-diag.so
--vendor/lib/libsdm-disp-vndapis.so
-vendor/lib/libsdmextension.so
-vendor/lib/libtinyxml2_1.so
-vendor/lib64/libsdm-color.so
-vendor/lib64/libsdm-diag.so
--vendor/lib64/libsdm-disp-vndapis.so
-vendor/lib64/libsdmextension.so
-vendor/lib64/libtinyxml2_1.so
 
 # Graphics firmware - from TA-1024
 vendor/firmware/a530_gpmu.fw2
@@ -509,30 +465,6 @@ vendor/lib/libperipheral_client.so
 vendor/lib/libsubsystem_control.so
 vendor/lib64/libperipheral_client.so
 vendor/lib64/libsubsystem_control.so
-
-# Postprocessing - from TA-1024
-etc/permissions/com.qti.snapdragon.sdk.display.xml
-framework/com.qti.snapdragon.sdk.display.jar
-lib/vendor.display.color@1.0.so
-lib/vendor.display.postproc@1.0.so
-lib64/vendor.display.color@1.0.so
-lib64/vendor.display.postproc@1.0.so
-vendor/bin/hw/vendor.display.color@1.0-service
-vendor/bin/mm-pp-dpps
-vendor/etc/init/vendor.display.color@1.0-service.rc
-vendor/lib/libdisp-aba.so
-vendor/lib/libqc-opt.so
-vendor/lib/vendor.display.color@1.0.so
-vendor/lib/vendor.display.color@1.1.so
-vendor/lib/vendor.display.color@1.2.so
-vendor/lib/vendor.display.postproc@1.0.so
-vendor/lib64/libdisp-aba.so
-vendor/lib64/libmm-dspp-utils.so
-vendor/lib64/libqc-opt.so
-vendor/lib64/vendor.display.color@1.0.so
-vendor/lib64/vendor.display.color@1.1.so
-vendor/lib64/vendor.display.color@1.2.so
-vendor/lib64/vendor.display.postproc@1.0.so
 
 # QDutils - from TA-1024
 lib/vendor.qti.hardware.qdutils_disp@1.0.so
