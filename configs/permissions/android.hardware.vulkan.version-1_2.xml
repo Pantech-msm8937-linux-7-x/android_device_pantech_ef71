@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Vulkan 1.2 that Mesa turnip reports on the Adreno 505
+     (VK_MAKE_API_VERSION(0, 1, 2, 0) = 4202496). -->
+<permissions>
+    <feature name="android.hardware.vulkan.version" version="4202496" />
+</permissions>

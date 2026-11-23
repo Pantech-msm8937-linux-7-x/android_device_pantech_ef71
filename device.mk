@@ -51,7 +51,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.host.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.vulkan.compute-0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.compute-0.xml \
     frameworks/native/data/etc/android.hardware.vulkan.level-0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.level-0.xml \
-    frameworks/native/data/etc/android.hardware.vulkan.version-1_1.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.version-1_1.xml \
+    $(LOCAL_PATH)/configs/permissions/android.hardware.vulkan.version-1_2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.vulkan.version-1_2.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.hardware.wifi.passpoint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.passpoint.xml \
@@ -152,7 +152,8 @@ EF71_PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@4.0-service.minigbm_msm \
     android.hardware.graphics.mapper@4.0-impl.minigbm_msm \
     gralloc.minigbm_msm \
-    libGLES_mesa \
+    mesa3d \
+    vulkan.freedreno \
     android.frameworks.displayservice@1.0.vendor
 
 # DRM
@@ -481,7 +482,6 @@ TARGET_USES_COLOR_METADATA := true
 QCOM_SOONG_NAMESPACE := $(LOCAL_PATH)/qcom/display
 DEVICE_SPECIFIC_DISPLAY_PATH := $(QCOM_SOONG_NAMESPACE)/hal
 PRODUCT_SOONG_NAMESPACES += \
-    external/mesa3d \
     vendor/qcom/opensource/commonsys-intf/display \
     $(wildcard vendor/qcom/opensource/commonsys/display) \
     $(wildcard vendor/qcom/opensource/display)
