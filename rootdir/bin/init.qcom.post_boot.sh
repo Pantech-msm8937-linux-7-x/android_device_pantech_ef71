@@ -238,8 +238,8 @@ function 8937_sched_dcvs_eas()
         #default value for hispeed_load is 90, for 8937 it should be 85
         echo 85 > /sys/devices/system/cpu/cpu4/cpufreq/schedutil/hispeed_load
 
-        echo 960000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-        echo 768000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+        # No minimum: the mainline kernel lists the lowest rates of the
+        # cluster PLLs, and cpu4 is in the cluster of cpu1 there
     fi
 
     if [ $KernelVersionA -ge 4 ] && [ $KernelVersionB -ge 19 ]; then
@@ -2778,7 +2778,8 @@ case "$target" in
                 # disable thermal core_control to update interactive gov and core_ctl settings
                 echo 0 > /sys/module/msm_thermal/core_control/enabled
 
-                if [ $KernelVersionA -ge 4 ] && [ $KernelVersionB -ge 9 ]; then
+                # 4.9 or later: the minor number alone says nothing of a 5+ kernel
+                if [ $KernelVersionA -gt 4 ] || { [ $KernelVersionA -eq 4 ] && [ $KernelVersionB -ge 9 ]; }; then
                     8937_sched_dcvs_eas
                 else
                     8937_sched_dcvs_hmp
