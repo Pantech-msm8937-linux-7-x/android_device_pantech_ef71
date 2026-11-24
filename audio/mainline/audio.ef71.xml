@@ -67,6 +67,12 @@
             <ctl name="SLIM TX8 MUX" val="DEC8"/>
             <ctl name="ADC MUX8" val="AMIC"/>
         </path>
+        <path name="fm_in_en">
+            <ctl name="MultiMedia2 Mixer INT_FM_TX" val="1"/>
+        </path>
+        <path name="fm_in_dis">
+            <ctl name="MultiMedia2 Mixer INT_FM_TX" val="0"/>
+        </path>
         <path name="pcm_in_dis">
             <ctl name="MultiMedia2 Mixer SLIMBUS_0_TX" val="0"/>
             <ctl name="AIF1_CAP Mixer SLIM TX8" val="0"/>
@@ -151,6 +157,10 @@
         </path>
     </device>
 
+    <!-- FM tuner: its stream sets the route, see "fm tuner" below -->
+    <device name="fm_tuner">
+    </device>
+
     <!-- Headset microphone on AMIC2, biased by MIC BIAS2 -->
     <device name="headset_in">
         <path name="on">
@@ -169,5 +179,16 @@
             rate="48000" period_size="960" period_count="4">
         <enable path="pcm_in_en"/>
         <disable path="pcm_in_dis"/>
+    </stream>
+
+    <!--
+         FM radio: the audio of the WCNSS FM receiver comes into the DSP on
+         its INT_FM_TX port, not from the codec. Opened for the FM tuner input
+         source on the MultiMedia2 front end of the normal capture stream.
+    -->
+    <stream name="fm tuner" type="pcm" dir="in" card="0" device="1"
+            rate="48000" period_size="960" period_count="4">
+        <enable path="fm_in_en"/>
+        <disable path="fm_in_dis"/>
     </stream>
 </audiohal>
