@@ -49,6 +49,9 @@ BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom loop.max_part=7 printk.devkmsg
 BOARD_KERNEL_CMDLINE += androidboot.bootdevice=7824900.mmc androidboot.boot_devices=soc@0/7824900.mmc
 BOARD_KERNEL_CMDLINE += androidboot.usbconfigfs=true androidboot.usbcontroller=ci_hdrc.0
 BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
+# warm resets: a cold (PSCI SYSTEM_RESET) one loses the restart reason aboot
+# reads from IMEM, so reboot recovery / bootloader came up as a normal boot
+BOARD_KERNEL_CMDLINE += reboot=warm
 # GPU microcode in /vendor/firmware, remote processor images under its
 # image/ link to the modem partition
 BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware
