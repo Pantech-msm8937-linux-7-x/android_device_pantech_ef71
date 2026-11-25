@@ -43,6 +43,12 @@
         <init>
             <ctl name="SLIMBUS_0_RX Audio Mixer MultiMedia1" val="0"/>
             <ctl name="MultiMedia2 Mixer SLIMBUS_0_TX" val="0"/>
+            <ctl name="SLIMBUS_0_RX Voice Mixer VoiceMMode1" val="0"/>
+            <ctl name="VoiceMMode1 Capture Mixer SLIMBUS_0_TX" val="0"/>
+            <ctl name="SLIMBUS_0_RX Voice Mixer VoLTE" val="0"/>
+            <ctl name="VoLTE Capture Mixer SLIMBUS_0_TX" val="0"/>
+            <ctl name="SLIMBUS_0_RX Voice Mixer CS-Voice" val="0"/>
+            <ctl name="CS-Voice Capture Mixer SLIMBUS_0_TX" val="0"/>
             <ctl name="RX0 Digital Volume" val="84"/>
             <ctl name="RX1 Digital Volume" val="84"/>
             <ctl name="RX2 Digital Volume" val="84"/>
@@ -75,6 +81,39 @@
         </path>
         <path name="pcm_in_dis">
             <ctl name="MultiMedia2 Mixer SLIMBUS_0_TX" val="0"/>
+            <ctl name="AIF1_CAP Mixer SLIM TX8" val="0"/>
+            <ctl name="SLIM TX8 MUX" val="ZERO"/>
+        </path>
+        <path name="voice_mmode1_en">
+            <ctl name="SLIMBUS_0_RX Voice Mixer VoiceMMode1" val="1"/>
+            <ctl name="VoiceMMode1 Capture Mixer SLIMBUS_0_TX" val="1"/>
+        </path>
+        <path name="voice_mmode1_dis">
+            <ctl name="SLIMBUS_0_RX Voice Mixer VoiceMMode1" val="0"/>
+            <ctl name="VoiceMMode1 Capture Mixer SLIMBUS_0_TX" val="0"/>
+        </path>
+        <path name="voice_volte_en">
+            <ctl name="SLIMBUS_0_RX Voice Mixer VoLTE" val="1"/>
+            <ctl name="VoLTE Capture Mixer SLIMBUS_0_TX" val="1"/>
+        </path>
+        <path name="voice_volte_dis">
+            <ctl name="SLIMBUS_0_RX Voice Mixer VoLTE" val="0"/>
+            <ctl name="VoLTE Capture Mixer SLIMBUS_0_TX" val="0"/>
+        </path>
+        <path name="voice_cs_en">
+            <ctl name="SLIMBUS_0_RX Voice Mixer CS-Voice" val="1"/>
+            <ctl name="CS-Voice Capture Mixer SLIMBUS_0_TX" val="1"/>
+        </path>
+        <path name="voice_cs_dis">
+            <ctl name="SLIMBUS_0_RX Voice Mixer CS-Voice" val="0"/>
+            <ctl name="CS-Voice Capture Mixer SLIMBUS_0_TX" val="0"/>
+        </path>
+        <path name="voice_in_en">
+            <ctl name="AIF1_CAP Mixer SLIM TX8" val="1"/>
+            <ctl name="SLIM TX8 MUX" val="DEC8"/>
+            <ctl name="ADC MUX8" val="AMIC"/>
+        </path>
+        <path name="voice_in_dis">
             <ctl name="AIF1_CAP Mixer SLIM TX8" val="0"/>
             <ctl name="SLIM TX8 MUX" val="ZERO"/>
         </path>
@@ -190,5 +229,38 @@
             rate="48000" period_size="960" period_count="4">
         <enable path="fm_in_en"/>
         <disable path="fm_in_dis"/>
+    </stream>
+
+    <!--
+         Voice calls: the modem and the DSP carry the audio. The HAL opens both
+         directions of the front end of the session the radio interface layer
+         names (vsid, in hex) to start it on SLIMBUS_0. The output streams
+         route the output device, the mic stream the microphone that goes
+         with it.
+    -->
+    <stream name="voice call 11C05000" type="hw" dir="out">
+        <enable path="voice_mmode1_en"/>
+        <disable path="voice_mmode1_dis"/>
+        <set name="card" val="0"/>
+        <set name="device" val="3"/>
+    </stream>
+
+    <stream name="voice call 10C02000" type="hw" dir="out">
+        <enable path="voice_volte_en"/>
+        <disable path="voice_volte_dis"/>
+        <set name="card" val="0"/>
+        <set name="device" val="4"/>
+    </stream>
+
+    <stream name="voice call 10C01000" type="hw" dir="out">
+        <enable path="voice_cs_en"/>
+        <disable path="voice_cs_dis"/>
+        <set name="card" val="0"/>
+        <set name="device" val="5"/>
+    </stream>
+
+    <stream name="voice call mic" type="hw" dir="in">
+        <enable path="voice_in_en"/>
+        <disable path="voice_in_dis"/>
     </stream>
 </audiohal>
