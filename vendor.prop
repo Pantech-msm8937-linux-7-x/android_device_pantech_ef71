@@ -188,7 +188,6 @@ ro.hardware.egl=mesa
 ro.hardware.vulkan=freedreno
 ro.hwui.use_vulkan=true
 ro.hardware.gralloc=minigbm_msm
-vendor.minigbm.debug=nocompression
 ro.hardware.hwcomposer=drm
 ro.opengles.version=196608
 
