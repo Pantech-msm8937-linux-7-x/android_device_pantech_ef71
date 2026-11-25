@@ -75,34 +75,19 @@ EF71_PRODUCT_PACKAGES += \
     android.hardware.audio.effect@7.0-impl \
     android.hardware.audio.service \
     android.hardware.bluetooth.audio-impl \
-    android.hardware.soundtrigger@2.1-impl \
     audio.bluetooth.default \
     audio.r_submix.default \
     audio.usb.default \
     audio.primary.tinyhal \
-    libaudiopreprocessing \
     libaudioroute \
-    libaacwrapper \
-    libaudio-resampler \
-    libqcomvisualizer \
-    libqcomvoiceprocessing
+    libaudio-resampler
 
-# WCD9335 with one WSA8810, from the EF71 LineageOS 17.1 tree
+# TinyHAL drives the WCD9335 with one WSA8810; the software effects of AOSP
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/audio/audio_configs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_configs.xml \
-    $(LOCAL_PATH)/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
-    $(LOCAL_PATH)/audio/audio_platform_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_platform_info.xml \
-    $(LOCAL_PATH)/audio/audio_platform_info_extcodec.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_platform_info_extcodec.xml \
+    frameworks/av/media/libeffects/data/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
     $(LOCAL_PATH)/audio/mainline/audio.ef71.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio.ef71.xml \
     $(LOCAL_PATH)/audio/mainline/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
     $(LOCAL_PATH)/audio/mainline/primary_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/primary_audio_policy_configuration.xml \
-    $(LOCAL_PATH)/audio/audio_tuning_mixer.txt:$(TARGET_COPY_OUT_VENDOR)/etc/audio_tuning_mixer.txt \
-    $(LOCAL_PATH)/audio/mixer_paths.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths.xml \
-    $(LOCAL_PATH)/audio/mixer_paths_wcd9335.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths_wcd9335.xml \
-    $(LOCAL_PATH)/audio/mixer_paths_wcd9335.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths_tashalite.xml \
-    $(LOCAL_PATH)/audio/sound_trigger_mixer_paths.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sound_trigger_mixer_paths.xml \
-    $(LOCAL_PATH)/audio/sound_trigger_mixer_paths_wcd9335.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sound_trigger_mixer_paths_wcd9335.xml \
-    $(LOCAL_PATH)/audio/sound_trigger_platform_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sound_trigger_platform_info.xml \
     frameworks/av/services/audiopolicy/config/a2dp_in_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_in_audio_policy_configuration_7_0.xml \
     frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
     frameworks/av/services/audiopolicy/config/bluetooth_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_audio_policy_configuration_7_0.xml \
@@ -215,7 +200,6 @@ EF71_PRODUCT_PACKAGES += \
     init.uclamp.rc \
     init.ef71.rc \
     ueventd.qcom.rc \
-    init.acdbdata.sh \
     init.class_main.sh \
     init.ef71.apn.sh \
     init.qcom.early_boot.sh \
@@ -224,7 +208,6 @@ EF71_PRODUCT_PACKAGES += \
     init.qcom.sensors.sh \
     init.qcom.sh \
     init.qcom.usb.sh \
-    init.qti.dcvs.sh \
     fstab.qcom \
     fstab.qcom_ramdisk
 
@@ -252,15 +235,10 @@ EF71_PRODUCT_PACKAGES += \
     android.hardware.lights-service.ef71
 
 # Media
+# media.settings.xml points at media_profiles_vendor.xml
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/media/msm8937/media_profiles_8937.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/media_profiles.xml \
-    $(LOCAL_PATH)/media/msm8937/media_profiles_8937.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml \
-    $(LOCAL_PATH)/media/msm8937/media_profiles_8956.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/media_profiles_8956.xml \
-    $(LOCAL_PATH)/media/msm8937/media_profiles_8956.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_8956.xml \
+    $(LOCAL_PATH)/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml \
     $(LOCAL_PATH)/media/media_codecs_mainline.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
-    $(LOCAL_PATH)/media/msm8937/media_codecs_performance_8937.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
-    $(LOCAL_PATH)/media/msm8937/media_codecs_performance_8937.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance_vendor.xml \
-    $(LOCAL_PATH)/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml \
@@ -461,28 +439,13 @@ EF71_PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += $(EF71_PRODUCT_PACKAGES)
 
-# Qualcomm audio, display and media HALs (LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0)
-USE_DEVICE_SPECIFIC_AUDIO := true
-USE_DEVICE_SPECIFIC_DISPLAY := true
-USE_DEVICE_SPECIFIC_MEDIA := true
-
-# Audio
-DEVICE_SPECIFIC_AUDIO_PATH := $(LOCAL_PATH)/qcom/audio/hal
-PRODUCT_SOONG_NAMESPACES += $(LOCAL_PATH)/qcom/audio
-TARGET_USES_QCOM_MM_AUDIO := true
-
-# Media
-MSM_VIDC_TARGET_LIST := msm8937 msm8953
-TARGET_USES_MEDIA_EXTENSIONS := true
-DEVICE_SPECIFIC_MEDIA_PATH := $(LOCAL_PATH)/qcom/media/hal
-
-# Display (QSSI compliant HAL)
+# Display: the headers the gralloc and metadata libraries of the camera HAL
+# build against
 TARGET_USES_COLOR_METADATA := true
 # $(QCOM_SOONG_NAMESPACE) must be a soong namespace with the
 # display_intf_headers module under display/
 # (SOONG_CONFIG_lineageQcomVars_qcom_display_headers_namespace)
 QCOM_SOONG_NAMESPACE := $(LOCAL_PATH)/qcom/display
-DEVICE_SPECIFIC_DISPLAY_PATH := $(QCOM_SOONG_NAMESPACE)/hal
 PRODUCT_SOONG_NAMESPACES += \
     vendor/qcom/opensource/commonsys-intf/display \
     $(wildcard vendor/qcom/opensource/commonsys/display) \

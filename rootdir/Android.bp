@@ -14,13 +14,6 @@ prebuilt_etc {
 // Init scripts
 
 prebuilt_etc {
-    name: "init.baseband.proxy.rc",
-    src: "etc/init.baseband.proxy.rc",
-    sub_dir: "init",
-    system_ext_specific: true,
-}
-
-prebuilt_etc {
     name: "init.qcom.rc",
     src: "etc/init.qcom.rc",
     sub_dir: "init/hw",
@@ -65,19 +58,6 @@ prebuilt_etc {
 // Configuration scripts
 
 sh_binary {
-    name: "init.acdbdata.sh",
-    src: "bin/init.acdbdata.sh",
-    vendor: true,
-}
-
-sh_binary {
-    name: "init.baseband.sh",
-    required: ["init.baseband.proxy.rc"],
-    src: "bin/init.baseband.sh",
-    vendor: true,
-}
-
-sh_binary {
     name: "init.class_main.sh",
     src: "bin/init.class_main.sh",
     vendor: true,
@@ -116,18 +96,6 @@ sh_binary {
 sh_binary {
     name: "init.qcom.usb.sh",
     src: "bin/init.qcom.usb.sh",
-    vendor: true,
-}
-
-sh_binary {
-    name: "init.qti.dcvs.sh",
-    src: "bin/init.qti.dcvs.sh",
-    vendor: true,
-}
-
-sh_binary {
-    name: "init.qti.qseecomd.sh",
-    src: "bin/init.qti.qseecomd.sh",
     vendor: true,
 }
 

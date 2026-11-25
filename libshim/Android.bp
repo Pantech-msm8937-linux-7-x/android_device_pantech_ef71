@@ -13,64 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-cc_library_shared {
-    name: "libshims_binder",
-    shared_libs: ["libbinder", "libutils"],
-    srcs: [
-        "libbinder/IServiceManager.cpp",
-        "libbinder/PermissionCache.cpp",
-    ],
-    vendor: true
-}
-
 // libandroid
-cc_library_shared {
-    name: "libshims_android",
-    proprietary: true,
-    defaults: ["hidl_defaults"],
-    srcs: [
-        "libshims_android.cpp",
-    ],
-    cflags: [
-        "-Werror",
-        "-Wextra",
-        "-Wall",
-    ],
-    shared_libs: [
-        "libutils",
-    ],
-}
-
 // libgui
-cc_library_shared {
-    name: "libshims_gui",
-    proprietary: true,
-    defaults: ["hidl_defaults"],
-    srcs: [
-        "libshims_gui.cpp",
-    ],
-    cflags: [
-        "-Werror",
-        "-Wextra",
-        "-Wall",
-    ],
-    shared_libs: [
-        "libgui_vendor",
-    ],
-    include_dirs: [
-        "frameworks/native/include",
-    ],
-}
-
 // libshim_camera
-cc_library_shared {
-    name: "libshims_ui",
-    srcs: ["libshims_ui.cpp"],
-    shared_libs: ["libui"],
-    vendor: true,
-    compile_multilib: "32",
-}
-
 cc_library_shared {
     name: "libshim_imscamera",
     system_ext_specific: true,

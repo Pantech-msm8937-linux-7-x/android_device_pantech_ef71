@@ -42,25 +42,6 @@ on post-fs-data
 on shutdown
     stop vendor.rmtfs
 
-# Acdbdata
-service vendor.acdbdata-sh /vendor/bin/init.acdbdata.sh
-    class hal
-    user system
-    group system
-    oneshot
-
-on property:persist.vendor.audio.calfile0=*
-    exec /bin/sleep 1s
-    restart vendor.audio-hal
-
-# Baseband
-service vendor.baseband-sh /vendor/bin/init.baseband.sh
-    class late_start
-    user system
-    group system
-    oneshot
-    disabled
-
 # GPS
 on property:persist.sys.xtra-daemon.enabled=*
     restart loc_launcher
@@ -112,12 +93,6 @@ on boot
     # Double tap to wake, set by the power HAL
     chown system system /sys/devices/platform/soc@0/78b7000.i2c/i2c-3/3-004a/dt2w_enable
     chown system system /sys/devices/virtual/touchscreen/touchscreen_dev/gesture_ctrl
-
-on property:vendor.subsys_state_notifier.modem.state=OFFLINE
-    stop vendor.qcrild
-
-on property:vendor.subsys_state_notifier.modem.state=ONLINE
-    start vendor.qcrild
 
 # SDHCI
 on early-fs
