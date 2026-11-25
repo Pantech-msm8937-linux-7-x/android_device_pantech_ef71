@@ -18,10 +18,17 @@
 # Vendor domain: only use the vendor toolbox
 export PATH=/vendor/bin
 
-# AT port: msm-4.19 only opens the SMD channels the modem allocated, and this
-# modem leaves DATA11 (smd11, the msm-3.18 port) unallocated; DATA4 (smd8)
-# answers AT commands and nothing else uses it
-DEV=/dev/smd8
+# AT port: rpmsg_wwan_ctrl puts the AT channels of the modem (DATA1 and
+# DATA4) up as wwan ports, which nothing else uses
+DEV=""
+for i in 1 2 3 4 5 6 7 8 9 10; do
+    for port in /sys/class/wwan/wwan*at*; do
+        [ -e "$port" ] && DEV=/dev/${port##*/} && break
+    done
+    [ -n "$DEV" ] && break
+    sleep 1
+done
+[ -n "$DEV" ] || exit 0
 MODEM_BUILD='MPSS.JO.1.2.c4-*'
 EFS_BACKUP=/data/vendor/radio/ef71_efs_orig.cfg
 
