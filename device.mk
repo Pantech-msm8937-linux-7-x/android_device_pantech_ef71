@@ -423,8 +423,11 @@ EF71_PRODUCT_PACKAGES += \
     vendor.qti.hardware.vibrator.service
 
 # Wi-Fi
-# No vendor Wi-Fi HAL: its legacy part only knows the Qualcomm prima driver
+# The default Wi-Fi HAL, with a vendor HAL of our own for wcn36xx: the
+# framework sets the country code of the hotspot through it
 EF71_PRODUCT_PACKAGES += \
+    android.hardware.wifi@1.0-service \
+    wifi_vendor_hal_ef71.xml \
     libwpa_client \
     hostapd \
     wificond \

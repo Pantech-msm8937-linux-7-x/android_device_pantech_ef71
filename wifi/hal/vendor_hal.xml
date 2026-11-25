@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The vendor HAL the default Wi-Fi HAL service loads (wifi_legacy_hal_factory) -->
+<WifiVendorHal version="1">
+    <path>/vendor/lib64/libwifi-hal-ef71.so</path>
+    <primary>1</primary>
+</WifiVendorHal>
