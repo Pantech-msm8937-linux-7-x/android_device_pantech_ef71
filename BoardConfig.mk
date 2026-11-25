@@ -39,6 +39,8 @@ TARGET_NO_BOOTLOADER := true
 BOARD_MESA3D_USES_MESON_BUILD := true
 BOARD_MESA3D_GALLIUM_DRIVERS := freedreno
 BOARD_MESA3D_VULKAN_DRIVERS := freedreno
+# HWUI renders with Vulkan (ro.hwui.use_vulkan, set by the build system)
+TARGET_USES_VULKAN := true
 
 # Kernel (mainline)
 # The upstream rmnet driver (over BAM-DMUX), which rmnetctl drives over
