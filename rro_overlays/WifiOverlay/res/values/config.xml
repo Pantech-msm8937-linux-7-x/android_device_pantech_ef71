@@ -44,4 +44,7 @@
 
     <!-- Enable ACS (auto channel selection) for Wifi hotspot (SAP) -->
     <bool translatable="false" name="config_wifi_softap_acs_supported">false</bool>
+
+    <!-- WCN3660 is dual band (802.11n): 5 GHz for the station and the hotspot -->
+    <bool translatable="false" name="config_wifi5ghzSupport">true</bool>
 </resources>
