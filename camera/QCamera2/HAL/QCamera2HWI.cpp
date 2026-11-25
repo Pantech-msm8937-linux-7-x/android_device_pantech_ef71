@@ -41,7 +41,6 @@
 #include "native_handle.h"
 
 // Camera definitions
-#include "android/QCamera2External.h"
 #include "QCamera2HWI.h"
 #include "QCameraBufferMaps.h"
 #include "QCameraFlash.h"
@@ -74,17 +73,6 @@ extern "C" {
 #define CAMERA_INITIAL_MAPPABLE_PREVIEW_BUFFERS 5
 
 namespace qcamera {
-
-/* ef71: setCameraLaunchStatus() looks up display.qservice with getService(),
- * which waits 5 seconds for a service this display HAL does not register, on
- * every camera open and close. Only notify it when it is actually there. */
-static void notifyDisplayCameraLaunch(bool launched)
-{
-    if (android::defaultServiceManager()->checkService(
-            android::String16("display.qservice")) != NULL) {
-        setCameraLaunchStatus(launched);
-    }
-}
 
 extern cam_capability_t *gCamCapability[MM_CAMERA_MAX_NUM_SENSORS];
 extern pthread_mutex_t gCamLock;
@@ -1963,9 +1951,7 @@ int QCamera2HardwareInterface::openCamera()
     property_get("service.bootanim.exit", value, "0");
     if (atoi(value) == 1) {
         pthread_mutex_lock(&gCamLock);
-        if (gNumCameraSessions++ == 0) {
-            notifyDisplayCameraLaunch(true);
-        }
+        gNumCameraSessions++;
         pthread_mutex_unlock(&gCamLock);
     }
 
@@ -2238,9 +2224,7 @@ int QCamera2HardwareInterface::closeCamera()
     property_get("service.bootanim.exit", value, "0");
     if (atoi(value) == 1) {
         pthread_mutex_lock(&gCamLock);
-        if (--gNumCameraSessions == 0) {
-            notifyDisplayCameraLaunch(false);
-        }
+        gNumCameraSessions--;
         pthread_mutex_unlock(&gCamLock);
     }
 

@@ -49,7 +49,6 @@
 #include "qdMetaData.h"
 
 // Camera dependencies
-#include "android/QCamera3External.h"
 #include "util/QCameraFlash.h"
 #include "QCamera3HWI.h"
 #include "QCamera3VendorTags.h"
@@ -62,17 +61,6 @@ extern "C" {
 using namespace android;
 
 namespace qcamera {
-
-/* ef71: setCameraLaunchStatus() looks up display.qservice with getService(),
- * which waits 5 seconds for a service this display HAL does not register, on
- * every camera open and close. Only notify it when it is actually there. */
-static void notifyDisplayCameraLaunch(bool launched)
-{
-    if (android::defaultServiceManager()->checkService(
-            android::String16("display.qservice")) != NULL) {
-        setCameraLaunchStatus(launched);
-    }
-}
 
 #define DATA_PTR(MEM_OBJ,INDEX) MEM_OBJ->getPtr( INDEX )
 
@@ -746,9 +734,7 @@ int QCamera3HardwareInterface::openCamera()
     property_get("service.bootanim.exit", value, "0");
     if (atoi(value) == 1) {
         pthread_mutex_lock(&gCamLock);
-        if (gNumCameraSessions++ == 0) {
-            notifyDisplayCameraLaunch(true);
-        }
+        gNumCameraSessions++;
         pthread_mutex_unlock(&gCamLock);
     }
 
@@ -783,9 +769,7 @@ int QCamera3HardwareInterface::closeCamera()
     property_get("service.bootanim.exit", value, "0");
     if (atoi(value) == 1) {
         pthread_mutex_lock(&gCamLock);
-        if (--gNumCameraSessions == 0) {
-            notifyDisplayCameraLaunch(false);
-        }
+        gNumCameraSessions--;
         pthread_mutex_unlock(&gCamLock);
     }
 
