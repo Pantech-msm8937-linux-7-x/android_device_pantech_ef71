@@ -13,9 +13,9 @@ on post-fs-data
 on init && property:ro.debuggable=1
     stop console
 
-# Modem: rmtfs serves the EFS partitions and boots the modem once ready.
-# Read only for now, the EFS holds the IMEI and RF calibration.
-service vendor.rmtfs /vendor/bin/rmtfs -o /dev/block/by-name -P -r -s
+# Modem: rmtfs serves the EFS partitions and boots the modem once ready. The
+# modem writes its EFS back as on the stock kernel: its IMS settings live there.
+service vendor.rmtfs /vendor/bin/rmtfs -o /dev/block/by-name -P -s
     class core
     user root
     group system
