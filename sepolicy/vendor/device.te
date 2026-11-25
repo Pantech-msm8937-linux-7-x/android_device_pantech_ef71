@@ -1,2 +1,5 @@
 # IR
 type ir_device, dev_type;
+
+# Endpoints rpmsg_char makes on SMD channels (the DIAG channel of the modem)
+type ef71_rpmsg_device, dev_type;

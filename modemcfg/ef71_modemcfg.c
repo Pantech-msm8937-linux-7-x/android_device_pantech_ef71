@@ -1,5 +1,21 @@
 /*
- * Write a carrier set of modem EFS files over /dev/diag.
+ * Copyright (C) 2026 The LineageOS Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * Write a carrier set of modem EFS files over the DIAG channel of the modem.
  *
  * The modem only takes its IMS settings from carrier MBNs it can authenticate,
  * and the Korean carrier MBNs do not load on this modem. The settings they
@@ -16,8 +32,10 @@
  *        ef71_modemcfg version              print the modem build ID
  */
 
+#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <signal.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -26,6 +44,8 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
+#include <linux/rpmsg.h>
+
 #include <android/log.h>
 
 #define TAG "ef71-modemcfg"
@@ -33,29 +53,12 @@
         __android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__); \
         fprintf(stderr, __VA_ARGS__); fputc('\n', stderr); } while (0)
 
-/* include/linux/diagchar.h */
-#define USER_SPACE_DATA_TYPE 0x20
-#define MEMORY_DEVICE_MODE 2
-#define DIAG_IOCTL_SWITCH_LOGGING 7
-#define DIAG_CON_APSS 0x1
-#define DIAG_CON_MPSS 0x2
-#define DIAG_MSM_MASK (1 << 0)  /* device_mask: the local (MSM) processor */
-
 /*
- * The msm-4.19 layout. msm-4.19 copies all of it and rejects a request
- * without a device_mask; msm-3.18 only reads the first three fields.
+ * The modem opens its DIAG SMD channel by itself; rpmsg_char gives userspace
+ * an endpoint on it.
  */
-struct diag_logging_mode_param_t {
-    uint32_t req_mode;
-    uint32_t peripheral_mask;
-    uint32_t pd_mask;
-    uint8_t mode_param;
-    uint8_t diag_id;
-    uint8_t pd_val;
-    uint8_t reserved;
-    int peripheral;
-    int device_mask;
-} __attribute__((packed));
+#define RPMSG_DEVICES "/sys/bus/rpmsg/devices"
+#define DIAG_CHANNEL ".DIAG.-1.-1"
 
 /* EFS2 over DIAG subsystem dispatch */
 #define DIAG_SUBSYS_CMD_F 0x4b
@@ -99,33 +102,122 @@ static uint16_t crc16(const uint8_t *p, size_t n)
     return ~crc;
 }
 
+/* The rpmsg_ctrl device of the SMD edge that has the DIAG channel */
+static int find_ctrl(char *edge, size_t len)
+{
+    DIR *d = opendir(RPMSG_DEVICES);
+    struct dirent *e;
+    int ctrl = -1;
+
+    if (!d) {
+        LOG("open %s: %s", RPMSG_DEVICES, strerror(errno));
+        return -1;
+    }
+    while ((e = readdir(d))) {
+        size_t n = strlen(e->d_name), m = strlen(DIAG_CHANNEL);
+        if (n > m && !strcmp(e->d_name + n - m, DIAG_CHANNEL)) {
+            snprintf(edge, len, "%.*s", (int)(n - m), e->d_name);
+            break;
+        }
+    }
+    closedir(d);
+    if (!edge[0]) {
+        LOG("the modem has no DIAG channel");
+        return -1;
+    }
+
+    char path[PATH_MAX];
+    snprintf(path, sizeof(path), RPMSG_DEVICES "/%s.rpmsg_ctrl.0.0/rpmsg", edge);
+    if (!(d = opendir(path))) {
+        LOG("open %s: %s", path, strerror(errno));
+        return -1;
+    }
+    while ((e = readdir(d)))
+        if (!strncmp(e->d_name, "rpmsg_ctrl", 10)) {
+            snprintf(path, sizeof(path), "/dev/%s", e->d_name);
+            ctrl = open(path, O_RDWR | O_CLOEXEC);
+            if (ctrl < 0)
+                LOG("open %s: %s", path, strerror(errno));
+            break;
+        }
+    closedir(d);
+    return ctrl;
+}
+
+/* The endpoint device rpmsg_char made for the DIAG channel of the edge */
+static int open_endpoint(const char *edge)
+{
+    char path[PATH_MAX], name[64], real[PATH_MAX];
+
+    for (int tries = 0; tries < 100; tries++) {
+        DIR *d = opendir("/sys/class/rpmsg");
+        struct dirent *e;
+
+        while (d && (e = readdir(d))) {
+            if (strncmp(e->d_name, "rpmsg", 5) || !strncmp(e->d_name, "rpmsg_ctrl", 10))
+                continue;
+            snprintf(path, sizeof(path), "/sys/class/rpmsg/%s/name", e->d_name);
+            FILE *f = fopen(path, "re");
+            if (!f)
+                continue;
+            int ok = fgets(name, sizeof(name), f) != NULL;
+            fclose(f);
+            name[strcspn(name, "\n")] = 0;
+            snprintf(path, sizeof(path), "/sys/class/rpmsg/%s", e->d_name);
+            if (!ok || strcmp(name, "DIAG") || !realpath(path, real) || !strstr(real, edge))
+                continue;
+            snprintf(path, sizeof(path), "/dev/%s", e->d_name);
+            int fd = open(path, O_RDWR | O_CLOEXEC);
+            if (fd < 0 && errno == ENOENT)
+                continue;   /* an endpoint going away, or ours not there yet */
+            closedir(d);
+            if (fd < 0)
+                LOG("open %s: %s", path, strerror(errno));
+            return fd;
+        }
+        if (d)
+            closedir(d);
+        usleep(20000);
+    }
+    LOG("no endpoint device for the DIAG channel");
+    return -1;
+}
+
 static int diag_open(void)
 {
-    struct diag_logging_mode_param_t mode = {
-        .req_mode = MEMORY_DEVICE_MODE,
-        .peripheral_mask = DIAG_CON_APSS | DIAG_CON_MPSS,
-        .mode_param = 0,
-        .device_mask = DIAG_MSM_MASK,
+    struct rpmsg_endpoint_info ept = {
+        .name = "DIAG",
+        .src = RPMSG_ADDR_ANY,
+        .dst = RPMSG_ADDR_ANY,
     };
+    char edge[128] = "";
     struct sigaction sa;
+    int ctrl;
 
     memset(&sa, 0, sizeof(sa));
     sa.sa_handler = on_alarm;   /* no SA_RESTART: a blocked read returns EINTR */
     sigaction(SIGALRM, &sa, NULL);
 
-    diag_fd = open("/dev/diag", O_RDWR | O_CLOEXEC);
-    if (diag_fd < 0) {
-        LOG("open /dev/diag: %s", strerror(errno));
+    ctrl = find_ctrl(edge, sizeof(edge));
+    if (ctrl < 0)
+        return -1;
+    if (ioctl(ctrl, RPMSG_CREATE_EPT_IOCTL, &ept) < 0) {
+        LOG("create the DIAG endpoint: %s", strerror(errno));
+        close(ctrl);
         return -1;
     }
-    /* The responses come back to us instead of USB until the fd is closed */
-    if (ioctl(diag_fd, DIAG_IOCTL_SWITCH_LOGGING, &mode) < 0) {
-        LOG("switch to memory device mode: %s", strerror(errno));
-        close(diag_fd);
-        diag_fd = -1;
-        return -1;
-    }
-    return 0;
+    close(ctrl);
+    diag_fd = open_endpoint(edge);
+    return diag_fd < 0 ? -1 : 0;
+}
+
+static void diag_close(void)
+{
+    if (diag_fd < 0)
+        return;
+    ioctl(diag_fd, RPMSG_DESTROY_EPT_IOCTL);
+    close(diag_fd);
+    diag_fd = -1;
 }
 
 /* Returns the length of a decoded response that starts with match, or -1 */
@@ -154,26 +246,12 @@ static int frame_take(const uint8_t *match, size_t match_len)
 
 static int diag_cmd(const uint8_t *req, size_t len)
 {
-    uint8_t tx[4 + MAX_PKT * 2 + 4];
-    size_t n = 0;
-    uint16_t crc = crc16(req, len);
-    uint32_t type = USER_SPACE_DATA_TYPE;
-
-    memcpy(tx, &type, 4);
-    n = 4;
-    for (size_t i = 0; i < len + 2; i++) {
-        uint8_t b = i < len ? req[i] : (i == len ? crc & 0xff : crc >> 8);
-        if (b == 0x7e || b == 0x7d) {
-            tx[n++] = 0x7d;
-            tx[n++] = b ^ 0x20;
-        } else {
-            tx[n++] = b;
-        }
-    }
-    tx[n++] = 0x7e;
+    /*
+     * The modem takes requests as they are and answers in HDLC frames: only
+     * the downstream diag driver of the AP took HDLC frames from userspace.
+     */
     frame_len = 0;
-    /* The driver returns 0 rather than the length on success */
-    if (write(diag_fd, tx, n) < 0) {
+    if (write(diag_fd, req, len) < 0) {
         LOG("diag write: %s", strerror(errno));
         return -1;
     }
@@ -188,27 +266,18 @@ static int diag_cmd(const uint8_t *req, size_t len)
             LOG("diag read: %s", strerror(errno));
             return -1;
         }
-        if (r < 8 || *(uint32_t *)rx != USER_SPACE_DATA_TYPE)
-            continue;
-        int num = *(int32_t *)(rx + 4);
-        size_t off = 8;
-        for (int k = 0; k < num && off + 4 <= (size_t)r; k++) {
-            int32_t blen = *(int32_t *)(rx + off);
-            off += 4;
-            if (blen < 0 || off + blen > (size_t)r)
-                break;
-            for (int32_t i = 0; i < blen; i++) {
-                uint8_t b = rx[off + i];
-                if (b != 0x7e) {
-                    if (frame_len < sizeof(frame))
-                        frame[frame_len++] = b;
-                    continue;
-                }
-                int got = frame_take(req, len < 4 ? len : 4);
-                if (got >= 0)
-                    return got;
+        /* The modem sends its events and logs here too: keep the frame
+         * that answers the command */
+        for (ssize_t i = 0; i < r; i++) {
+            uint8_t b = rx[i];
+            if (b != 0x7e) {
+                if (frame_len < sizeof(frame))
+                    frame[frame_len++] = b;
+                continue;
             }
-            off += blen;
+            int got = frame_take(req, len < 4 ? len : 4);
+            if (got >= 0)
+                return got;
         }
     }
     LOG("no response to EFS command %d", req[2] | req[3] << 8);
@@ -595,7 +664,7 @@ int main(int argc, char **argv)
         if (diag_open())
             return 2;
         ret = do_version();
-        close(diag_fd);
+        diag_close();
         return ret;
     }
     if (argc < 3)
@@ -620,7 +689,7 @@ int main(int argc, char **argv)
         ret = do_save(argv[2]);
     else
         ret = 2;
-    close(diag_fd);
+    diag_close();
     return ret;
 
 usage:

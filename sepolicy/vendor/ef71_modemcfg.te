@@ -1,8 +1,12 @@
-# Writes the per carrier modem EFS sets over /dev/diag (init.ef71.apn.sh)
+# Writes the per carrier modem EFS sets over the DIAG channel (init.ef71.apn.sh)
 type ef71_modemcfg, domain;
 type ef71_modemcfg_exec, exec_type, vendor_file_type, file_type;
 
-diag_use(ef71_modemcfg)
+# An rpmsg_char endpoint on the DIAG channel of the modem, found through sysfs
+allow ef71_modemcfg ef71_rpmsg_device:chr_file { rw_file_perms ioctl };
+allow ef71_modemcfg sysfs:dir r_dir_perms;
+allow ef71_modemcfg sysfs:file r_file_perms;
+allow ef71_modemcfg sysfs:lnk_file read;
 
 # Output goes back to the calling script through a pipe
 allow ef71_modemcfg qti_init_shell:fd use;
