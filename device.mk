@@ -431,6 +431,11 @@ EF71_PRODUCT_PACKAGES += \
     WifiOverlayEF71 \
     wpa_supplicant
 
+# The driver commands of wpa_supplicant (BOARD_WPA_SUPPLICANT_PRIVATE_LIB),
+# built with CFI as wpa_supplicant is, which calls into them
+PRODUCT_CFI_INCLUDE_PATHS += \
+    device/pantech/ef71/wifi/wpa_supplicant_8_lib
+
 # EF71 calibration, from the LineageOS 17.1 tree
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf \
