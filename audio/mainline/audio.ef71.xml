@@ -21,10 +21,11 @@
      AIF1, capture from SLIMBUS_0_TX into MultiMedia2 (pcm 1).
 
      The loudspeaker is a WSA8810 on the WCD9335 SoundWire master, fed by
-     interpolator INT7. Its DAC port stays switched on: the amplifier only
-     joins the SoundWire stream with the ports switched on when the stream
-     starts, so a stream started on another output (a call on the earpiece)
-     would never reach it.
+     interpolator INT7. Its DAC and boost ports stay switched on: the
+     amplifier only joins the SoundWire stream with the ports switched on
+     when the stream starts, so a stream started on another output (a call
+     on the earpiece) would never reach it. The boost runs the amplifier
+     from its boost converter, as the vendor software does.
 
      q6asm-dai only takes periods and buffers in steps of 480 frames, so the
      streams ask for such a size: tinyalsa derives the start and stop
@@ -58,6 +59,7 @@
             <ctl name="RX7 Digital Volume" val="81"/>
             <ctl name="SpkrLeft PA Volume" val="12"/>
             <ctl name="SpkrLeft DAC Switch" val="1"/>
+            <ctl name="SpkrLeft BOOST Switch" val="1"/>
             <ctl name="HPHL Volume" val="20"/>
             <ctl name="HPHR Volume" val="20"/>
             <ctl name="RX HPH Mode" val="CLS_H_HIFI"/>
