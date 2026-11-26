@@ -47,7 +47,6 @@ else
 fi
 
 if [ -f /sys/class/drm/card0-DSI-1/modes ]; then
-    echo "detect" > /sys/class/drm/card0-DSI-1/status
     mode_file=/sys/class/drm/card0-DSI-1/modes
     while read line; do
         fb_width=${line%%x*};
