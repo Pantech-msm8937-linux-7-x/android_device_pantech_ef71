@@ -26,7 +26,9 @@ done
 
 [ "$(cat /sys/class/net/wlan0/address)" = "00:00:00:00:00:00" ] || exit 0
 
-serial=$(getprop ro.boot.serialno)
+# The serial number as aboot passes it: SELinux keeps ro.boot.serialno from
+# all but a few domains
+serial=$(sed -n 's/.*androidboot\.serialno=\([^ ]*\).*/\1/p' /proc/cmdline)
 mac=$(printf '02%010s' "$serial" | tr ' ' '0' | cut -c1-12 | sed 's/\(..\)/\1:/g; s/:$//')
 
 ifconfig wlan0 down
