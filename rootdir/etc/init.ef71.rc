@@ -91,8 +91,8 @@ on boot
     enable vendor.qcrild
 
     # Double tap to wake, set by the power HAL
-    chown system system /sys/devices/platform/soc@0/78b7000.i2c/i2c-3/3-004a/dt2w_enable
-    chown system system /sys/devices/virtual/touchscreen/touchscreen_dev/gesture_ctrl
+    chown system system /sys/devices/platform/soc@0/78b7000.i2c/i2c-0/0-004a/dt2w_enable
+    chown system system /sys/devices/platform/soc@0/78b7000.i2c/i2c-0/0-0038/dt2w_enable
 
 # SDHCI
 on early-fs

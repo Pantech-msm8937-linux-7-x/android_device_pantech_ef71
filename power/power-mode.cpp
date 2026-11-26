@@ -33,8 +33,8 @@ namespace impl {
 // EF71S: Atmel mXT641T, EF71AS: FocalTech FT8716. Only the one fitted to
 // the device probes, so write to whichever node exists.
 static constexpr const char* kTapToWakeNodes[] = {
-        "/sys/devices/platform/soc/78b7000.i2c/i2c-3/3-004a/dt2w_enable",
-        "/sys/devices/virtual/touchscreen/touchscreen_dev/gesture_ctrl",
+        "/sys/devices/platform/soc@0/78b7000.i2c/i2c-0/0-004a/dt2w_enable",
+        "/sys/devices/platform/soc@0/78b7000.i2c/i2c-0/0-0038/dt2w_enable",
 };
 
 static const char* findTapToWakeNode() {
