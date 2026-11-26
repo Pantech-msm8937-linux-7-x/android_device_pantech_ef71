@@ -1,12 +1,3 @@
-
-# Mainline has no ashmem: HIDL message queues and other shared memory
-# need memfd, which init.rc turns off again in post-fs-data
-on early-init
-    setprop sys.use_memfd true
-
-on post-fs-data
-    setprop sys.use_memfd true
-
 # The console of the kernel is the framebuffer (fbcon), not a UART. The shell
 # init.rc starts on it in debuggable builds serves no one there, and with it
 # running the system warns of a serial console slowing the device down.
