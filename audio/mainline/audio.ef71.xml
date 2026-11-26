@@ -25,7 +25,9 @@
      amplifier only joins the SoundWire stream with the ports switched on
      when the stream starts, so a stream started on another output (a call
      on the earpiece) would never reach it. The boost runs the amplifier
-     from its boost converter, as the vendor software does.
+     from its boost converter and the compander of INT7 drives its gain
+     through the compander port, keeping loud passages from clipping, as
+     the vendor software does.
 
      q6asm-dai only takes periods and buffers in steps of 480 frames, so the
      streams ask for such a size: tinyalsa derives the start and stop
@@ -60,6 +62,8 @@
             <ctl name="SpkrLeft PA Volume" val="12"/>
             <ctl name="SpkrLeft DAC Switch" val="1"/>
             <ctl name="SpkrLeft BOOST Switch" val="1"/>
+            <ctl name="SpkrLeft COMP Switch" val="1"/>
+            <ctl name="COMP7 Switch" val="1"/>
             <ctl name="HPHL Volume" val="20"/>
             <ctl name="HPHR Volume" val="20"/>
             <ctl name="RX HPH Mode" val="CLS_H_HIFI"/>
