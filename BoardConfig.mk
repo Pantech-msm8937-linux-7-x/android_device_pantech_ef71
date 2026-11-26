@@ -59,6 +59,8 @@ BOARD_KERNEL_CMDLINE += reboot=warm
 BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware
 # Bring-up; keep SELinux audit spam out of the kernel log
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive audit=0
+# No kernel log on the screen: fbcon stays off the first console, the one shown
+BOARD_KERNEL_CMDLINE += fbcon=vc:2-6
 # BAM-DMUX as the rmnet_bam devices netmgrd configures
 BOARD_KERNEL_CMDLINE += qcom_bam_dmux.rmnet_bam=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz
