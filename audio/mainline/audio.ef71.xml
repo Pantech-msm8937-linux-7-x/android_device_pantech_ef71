@@ -234,6 +234,21 @@
     </stream>
 
     <!--
+         Call volume and microphone mute: the volume sets the digital gain
+         of the interpolators a call plays on (earpiece INT0, loudspeaker
+         INT7, headphones the mix inputs of INT1 and INT2) from 6 dB above
+         their gain outside calls at the highest volume to 30 dB below
+         that; the DSP mutes the microphone of calls.
+    -->
+    <stream name="global" type="hw" dir="out">
+        <set name="voice volume ctls"
+             val="RX0 Digital Volume,RX7 Digital Volume,RX1 Mix Digital Volume,RX2 Mix Digital Volume"/>
+        <set name="voice volume max db" val="6"/>
+        <set name="voice volume range db" val="30"/>
+        <set name="voice mute ctl" val="Voice Tx Mute"/>
+    </stream>
+
+    <!--
          Voice calls: the modem and the DSP carry the audio. The HAL opens both
          directions of the front end of the session the radio interface layer
          names (vsid, in hex) to start it on SLIMBUS_0. The output streams
