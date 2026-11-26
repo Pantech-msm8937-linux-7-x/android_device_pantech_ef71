@@ -15,3 +15,5 @@ allow ef71_modemcfg qti_init_shell:fifo_file { getattr write };
 # Backup of the EFS files it replaces
 allow ef71_modemcfg vendor_radio_data_file:dir rw_dir_perms;
 allow ef71_modemcfg vendor_radio_data_file:file create_file_perms;
+
+r_dir_file(ef71_modemcfg, vendor_sysfs_remoteproc)

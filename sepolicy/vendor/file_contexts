@@ -1,16 +1,55 @@
 # Block devices
-/dev/block/platform/soc/7824900.sdhci/by-name/aboot             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/cmnlib             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/cmnlib64             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/devcfg             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/dsp             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/keymaster             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/lksecapp             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/rpm             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/sbl1             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7824900.sdhci/by-name/tz             u:object_r:custom_ab_block_device:s0
-/dev/block/platform/soc/7864900.sdhci/by-name/userdata		u:object_r:userdata_block_device:s0
-/dev/block/platform/soc/7864900.sdhci/by-name/ssd		u:object_r:ssd_device:s0
+#
+# The by-name links ueventd labels the eMMC partitions through on 7.3; the
+# legacy policy has them under platform/soc/7824900.sdhci, as on msm-4.19
+/dev/block/platform/soc@0/7824900.mmc/by-name/fsg                      u:object_r:modem_efs_partition_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/fsc                      u:object_r:modem_efs_partition_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/modemst1                 u:object_r:modem_efs_partition_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/modemst2                 u:object_r:modem_efs_partition_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/ssd                      u:object_r:ssd_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/misc                     u:object_r:misc_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/system                   u:object_r:system_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/userdata                 u:object_r:userdata_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/dip                      u:object_r:dip_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/mdtp                     u:object_r:mdtp_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/config                   u:object_r:frp_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/boot                     u:object_r:boot_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/recovery                 u:object_r:recovery_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/cache                    u:object_r:cache_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/logdump                  u:object_r:logdump_partition:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/super                    u:object_r:super_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/persist                  u:object_r:persist_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/rawdump                  u:object_r:rawdump_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/aboot_[ab]               u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/boot_[ab]                u:object_r:boot_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/cmnlib_[ab]              u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/cmnlib64_[ab]            u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/devcfg_[ab]              u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/mdtp_[ab]                u:object_r:mdtp_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/keymaster_[ab]           u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/modem_[ab]               u:object_r:modem_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/dsp_[ab]                 u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/dtbo_[ab]                u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/pmic_[ab]                u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/rpm_[ab]                 u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/system_[ab]              u:object_r:system_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/tz_[ab]                  u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/ImageFv_[ab]             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/vendor_[ab]              u:object_r:system_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/sbl1_[ab]                u:object_r:xbl_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/recovery_[ab]            u:object_r:recovery_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/vbmeta_[ab]              u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/vbmeta_system_[ab]       u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/aboot             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/cmnlib             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/cmnlib64             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/devcfg             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/dsp             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/keymaster             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/lksecapp             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/rpm             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/sbl1             u:object_r:custom_ab_block_device:s0
+/dev/block/platform/soc@0/7824900.mmc/by-name/tz             u:object_r:custom_ab_block_device:s0
 
 # Camera sockets
 /data/vendor/qcam(/.*)?		u:object_r:vendor_camera_data_file:s0
@@ -21,6 +60,8 @@
 # Firmware
 /firmware                                                     u:object_r:firmware_file:s0
 /bt_firmware                                                  u:object_r:bt_firmware_file:s0
+# The legacy policy only labels them under /vendor
+/system/vendor/firmware(/.*)?                                 u:object_r:vendor_firmware_file:s0
 /persist(/.*)?                                                u:object_r:mnt_vendor_file:s0
 /mnt/vendor/persist(/.*)?                                     u:object_r:mnt_vendor_file:s0
 /mnt/vendor/persist/WCNSS_qcom_wlan_nv.bin                    u:object_r:wcnss_persist_file:s0
@@ -28,11 +69,26 @@
 # Executables
 /(vendor|system/vendor)/bin/charger_led				u:object_r:charger_led_exec:s0
 /(vendor|system/vendor)/bin/edgnss-daemon			u:object_r:location_exec:s0
+/(vendor|system/vendor)/bin/awk					u:object_r:vendor_toolbox_exec:s0
 
 # HALs
 /(vendor|system/vendor)/bin/hw/android\.hardware\.lights-service\.ef71                    u:object_r:hal_light_default_exec:s0
 /(vendor|system/vendor)/bin/hw/android\.hardware\.thermal@2\.0-service\.qti\.ef71	u:object_r:hal_thermal_default_exec:s0
-/(vendor|system/vendor)/lib(64)?/vulkan\.[a-z0-9]*\.so                                  u:object_r:same_process_hal_file:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.gatekeeper@1\.0-service\.software	u:object_r:hal_gatekeeper_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.media\.c2@1\.2-service-v4l2(-32|-64)?	u:object_r:mediacodec_exec:s0
+
+# Graphics: Mesa and minigbm. Their own policies only know /vendor, not the
+# /system/vendor this vendor tree lives in.
+/(vendor|system/vendor)/lib(64)?/libgallium_dri\.so				u:object_r:same_process_hal_file:s0
+/(vendor|system/vendor)/lib(64)?/hw/vulkan\.[a-z0-9]+\.so			u:object_r:same_process_hal_file:s0
+/(vendor|system/vendor)/lib(64)?/libminigbm_gralloc_msm\.so			u:object_r:same_process_hal_file:s0
+/(vendor|system/vendor)/lib(64)?/hw/gralloc\.minigbm_msm\.so			u:object_r:same_process_hal_file:s0
+/(vendor|system/vendor)/lib(64)?/hw/android\.hardware\.graphics\.mapper@4\.0-impl\.minigbm_msm\.so	u:object_r:same_process_hal_file:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.graphics\.allocator@4\.0-service\.minigbm_msm	u:object_r:hal_graphics_allocator_default_exec:s0
+# The render node Mesa opens, untrusted apps among them, which may not use
+# a graphics_device; card0 stays the composer's
+/dev/dri						u:object_r:gpu_device:s0
+/dev/dri/renderD[0-9]+					u:object_r:gpu_device:s0
 
 # Input devices
 /(vendor|system/vendor)/usr/idc(/.*)?                         u:object_r:vendor_idc_file:s0

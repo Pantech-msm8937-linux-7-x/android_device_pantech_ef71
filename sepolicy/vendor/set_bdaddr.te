@@ -9,3 +9,5 @@ allow set_bdaddr self:bluetooth_socket { bind create read write };
 allow set_bdaddr self:capability net_admin;
 allow set_bdaddr set_bdaddr_exec:file rx_file_perms;
 allow set_bdaddr vendor_toolbox_exec:file execute_no_trans;
+
+dontaudit set_bdaddr rootfs:dir r_dir_perms;

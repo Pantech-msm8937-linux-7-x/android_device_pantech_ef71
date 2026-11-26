@@ -26,3 +26,6 @@ type sysfs_modem_subsys, fs_type, sysfs_type;
 
 # Double tap to wake
 type sysfs_tap_to_wake, fs_type, sysfs_type;
+
+# The eMMC read-ahead
+type vendor_sysfs_read_ahead, fs_type, sysfs_type;

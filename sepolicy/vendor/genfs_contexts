@@ -10,43 +10,79 @@ genfscon sysfs /firmware/devicetree/base/compatible		u:object_r:fdt_compatible:s
 genfscon sysfs /firmware/devicetree/base/model			u:object_r:fdt_model:s0
 genfscon sysfs /firmware/devicetree/base/soc/sound/qcom,model	u:object_r:fdt_sound:s0
 
-# Leds
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-00/200f000.qcom,spmi:qcom,pm8953@0:qcom,leds@a100 u:object_r:sysfs_leds:s0
-genfscon sysfs /devices/platform/soc/78b6000.i2c/i2c-2/2-0045/leds/ u:object_r:sysfs_leds:s0
-# LP5523 (indicator and key backlights)
-genfscon sysfs /devices/platform/soc/7af8000.i2c/i2c-8/8-0032/leds u:object_r:sysfs_leds:s0
-
-# Power
-genfscon sysfs /devices/soc/soc:qcom,bcl/power_supply                u:object_r:sysfs_batteryinfo:s0
-genfscon sysfs /devices/soc/msm-bcl-21/power_supply                  u:object_r:sysfs_batteryinfo:s0
-genfscon sysfs /devices/soc/qpnp-typec-9/power_supply                  u:object_r:sysfs_batteryinfo:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:vadc@3100 u:object_r:sysfs_battery_supply:s0
-
 # ProcFS
 genfscon proc /sys/vm/dirty_writeback_centisecs				u:object_r:proc_dirty:s0
 
 # Rmt
 genfscon debugfs /rmt_storage	u:object_r:debugfs_rmt:s0
 
-# RTC
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-00/200f000.qcom,spmi:qcom,pm8937@0:qcom,pm8937_rtc/rtc u:object_r:sysfs_rtc:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-00/200f000.qcom,spmi:qcom,pm8953@0:qcom,pm8953_rtc/rtc u:object_r:sysfs_rtc:s0
-
 # SDHCI
 genfscon sysfs /kernel/sdhci_msm	u:object_r:sysfs_kernel_sdhci_msm:s0
 
-# Power supplies the legacy policy leaves out
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:qcom,qpnp-smbcharger/power_supply/dc u:object_r:sysfs_batteryinfo:s0
+# Mainline (7.3) sysfs: the legacy policy only knows the msm-4.19 paths
 
-# Wakeup sources the legacy policy leaves out
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-00/200f000.qcom,spmi:qcom,pm8937@0:qcom,pm8937_rtc/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-00/200f000.qcom,spmi:qcom,pm8937@0:qcom,pm8937_rtc/rtc/rtc0/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-00/200f000.qcom,spmi:qcom,pm8937@0:qcom,power-on@800/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:qcom,fg/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:qcom,fg/power_supply/bms/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:qcom,power-on@800/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:qcom,qpnp-smbcharger/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:qcom,qpnp-smbcharger/power_supply/battery/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:qcom,qpnp-smbcharger/power_supply/dc/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/200f000.qcom,spmi/spmi-0/spmi0-02/200f000.qcom,spmi:qcom,pmi8950@2:qcom,qpnp-smbcharger/power_supply/usb/wakeup u:object_r:sysfs_wakeup:s0
-genfscon sysfs /devices/platform/soc/c140000.slim/tasha-slim-pgd/wakeup u:object_r:sysfs_wakeup:s0
+# LP5523 (indicator and key backlights)
+genfscon sysfs /devices/platform/soc@0/7af8000.i2c/i2c-2/2-0032/leds				u:object_r:sysfs_leds:s0
+
+# PMI8950 charger and fuel gauge, the extcon of the charger
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:smbchager@1000/power_supply	u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:fuel-gauge@4000/power_supply	u:object_r:sysfs_batteryinfo:s0
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:smbchager@1000/extcon		u:object_r:sysfs_extcon:s0
+
+# RTC
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-00/200f000.spmi:pmic@0:rtc@6000/rtc			u:object_r:sysfs_rtc:s0
+
+# Wakeup sources
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-00/200f000.spmi:pmic@0:rtc@6000/wakeup			u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-00/200f000.spmi:pmic@0:rtc@6000/rtc/rtc0/alarmtimer.0.auto/wakeup	u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-00/200f000.spmi:pmic@0:pon@800/200f000.spmi:pmic@0:pon@800:pwrkey/wakeup	u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:smbchager@1000/power_supply/qcom-smbchg-usb/wakeup	u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:smbchager@1000/power_supply/qcom-smbchg-dc/wakeup	u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:fuel-gauge@4000/power_supply/qcom-battery/wakeup	u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/4a9000.thermal-sensor/wakeup				u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/78db000.usb/ci_hdrc.0/wakeup				u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/78b7000.i2c/i2c-0/0-004a/wakeup				u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/78b7000.i2c/i2c-0/0-0038/wakeup				u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/7af5000.i2c/i2c-1/1-0028/wakeup				u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/c200000.remoteproc/wakeup				u:object_r:sysfs_wakeup:s0
+
+# GPU and display: libdrm reads the uevent of the DRM device, the perf HAL
+# the modes of the panel
+genfscon sysfs /devices/platform/soc@0/1a00000.display-subsystem/1a01000.display-controller/uevent	u:object_r:sysfs_gpu:s0
+genfscon sysfs /devices/platform/soc@0/1a00000.display-subsystem/1a01000.display-controller/drm/card0/card0-DSI-1/modes	u:object_r:sysfs_gpu:s0
+
+# Camera: the names of the msm-cam and sensor video nodes mm-qcamerad goes
+# through
+genfscon sysfs /devices/platform/soc@0/1b00000.qcom,msm-cam/video4linux			u:object_r:sysfs_graphics:s0
+# The sensor and venus video nodes, numbered as they happen to probe; the
+# wakeup sources of the sensors are in theirs
+genfscon sysfs /devices/platform/soc@0/1b0c000.qcom,cci/1b0c000.qcom,cci:qcom,camera@0/video4linux	u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/1b0c000.qcom,cci/1b0c000.qcom,cci:qcom,camera@1/video4linux	u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/1d00000.venus/video4linux				u:object_r:sysfs_graphics:s0
+
+# eMMC statistics for storaged
+genfscon sysfs /devices/platform/soc@0/7824900.mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/stat	u:object_r:sysfs_disk_stat:s0
+
+# Remote processors rmtfs looks up, the RPS of the BAM-DMUX rmnet devices
+genfscon sysfs /class/remoteproc						u:object_r:vendor_sysfs_remoteproc:s0
+genfscon sysfs /devices/platform/soc@0/4080000.remoteproc/remoteproc				u:object_r:vendor_sysfs_remoteproc:s0
+genfscon sysfs /devices/platform/soc@0/4080000.remoteproc/modalias				u:object_r:vendor_sysfs_remoteproc:s0
+genfscon sysfs /devices/platform/soc@0/a204000.remoteproc/remoteproc				u:object_r:vendor_sysfs_remoteproc:s0
+genfscon sysfs /devices/platform/soc@0/a204000.remoteproc/modalias				u:object_r:vendor_sysfs_remoteproc:s0
+genfscon sysfs /devices/platform/soc@0/c200000.remoteproc/remoteproc				u:object_r:vendor_sysfs_remoteproc:s0
+genfscon sysfs /devices/platform/soc@0/c200000.remoteproc/modalias				u:object_r:vendor_sysfs_remoteproc:s0
+genfscon sysfs /devices/platform/soc@0/4080000.remoteproc/4080000.remoteproc:bam-dmux/net	u:object_r:sysfs_net:s0
+
+# The rmtfs shared memory
+genfscon sysfs /class/rmtfs							u:object_r:vendor_sysfs_rmtfs:s0
+genfscon sysfs /devices/platform/92100000.rmtfs/rmtfs				u:object_r:vendor_sysfs_rmtfs:s0
+
+# eMMC revision and wear for storaged
+genfscon sysfs /devices/platform/soc@0/7824900.mmc/mmc_host/mmc0/mmc0:0001/rev			u:object_r:sysfs_disk_stat:s0
+genfscon sysfs /devices/platform/soc@0/7824900.mmc/mmc_host/mmc0/mmc0:0001/pre_eol_info		u:object_r:sysfs_disk_stat:s0
+genfscon sysfs /devices/platform/soc@0/7824900.mmc/mmc_host/mmc0/mmc0:0001/life_time		u:object_r:sysfs_disk_stat:s0
+
+# The eMMC read-ahead init.qcom.post_boot.sh sets
+genfscon sysfs /devices/platform/soc@0/7824900.mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/read_ahead_kb	u:object_r:vendor_sysfs_read_ahead:s0
+genfscon sysfs /devices/platform/soc@0/7824900.mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0boot0/queue/read_ahead_kb	u:object_r:vendor_sysfs_read_ahead:s0
+genfscon sysfs /devices/platform/soc@0/7824900.mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0boot1/queue/read_ahead_kb	u:object_r:vendor_sysfs_read_ahead:s0

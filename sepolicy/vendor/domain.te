@@ -1,3 +1,17 @@
 # The linker checks every TARGET_LD_SHIM_LIBS path in every process;
-# only qcrild itself has to resolve its own
+# only qcrild and netmgrd themselves have to resolve their own
 dontaudit domain rild_exec:file { getattr read };
+dontaudit domain netmgrd_exec:file { getattr read };
+
+# Mesa looks its options up as vendor.mesa.* in every process it is loaded in
+get_prop(domain, vendor_mesa_prop)
+
+# Lookups of services left out of the build, which only find nothing
+dontaudit { hal_nfc_default vendor_dpmd } default_android_hwservice:hwservice_manager find;
+dontaudit { location mm-qcamerad } fwk_sensor_service:service_manager find;
+
+# The legacy camera daemon looks the sensor service up through servicemanager
+dontaudit servicemanager mm-qcamerad:binder call;
+
+# Mesa looks at the primary node too before taking the render node
+dontaudit { appdomain bootanim } graphics_device:chr_file getattr;

@@ -42,3 +42,6 @@ vendor.ef71.sim_reboot			u:object_r:vendor_ef71_sim_prop:s0
 # QTI data service apps (IWlanService, dpmserviceapp)
 persist.vendor.iwlan.logging.logcat	u:object_r:vendor_data_app_prop:s0
 persist.vendor.mwqem.enable		u:object_r:vendor_data_app_prop:s0
+
+# Mesa options
+vendor.mesa.		u:object_r:vendor_mesa_prop:s0

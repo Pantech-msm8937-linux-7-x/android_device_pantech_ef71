@@ -1,1 +1,16 @@
 allow kernel kernel:capability { kill };
+
+# Firmware loads: the GPU and camera microcode in /vendor/firmware, the ADSP
+# image on the modem partition and the WCNSS NV from /vendor/etc/wifi
+allow kernel vendor_firmware_file:file { open read };
+allow kernel firmware_file:dir search;
+allow kernel firmware_file:file { open read };
+allow kernel vendor_configs_file:file { open read };
+
+# The firmware loader reads the modem partition images (0440 system) as
+# the kworker it runs in
+allow kernel self:capability dac_read_search;
+
+# kdevtmpfs keeps its own devtmpfs instance, which nothing in Android mounts
+dontaudit kernel device:dir { add_name remove_name write };
+dontaudit kernel device:{ blk_file chr_file } { create setattr unlink };

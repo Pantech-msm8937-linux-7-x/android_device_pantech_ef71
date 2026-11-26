@@ -11,3 +11,7 @@ allow init sysfs_kernel_sdhci_msm:file w_file_perms;
 
 # SoC info
 r_dir_file(init, sysfs_socinfo)
+
+# The wifi and bootreceiver tracing instances of init.rc: on 7.3 tracefs
+# creates their files itself
+dontaudit init { debugfs_bootreceiver_tracing debugfs_wifi_tracing }:dir { add_name write };

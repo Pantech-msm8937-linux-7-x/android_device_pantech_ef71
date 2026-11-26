@@ -16,3 +16,7 @@ allow mm-qcamerad camera_data_file:file rw_file_perms;
 # The daemon reads the gyro through the framework sensor service, which
 # delivers the events with binder calls back into it
 binder_call(system_server, mm-qcamerad)
+
+# The names of the video nodes, the sensor ones among their wakeup sources
+r_dir_file(mm-qcamerad, sysfs_graphics)
+r_dir_file(mm-qcamerad, sysfs_wakeup)

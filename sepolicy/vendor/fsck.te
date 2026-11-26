@@ -1,0 +1,3 @@
+# fsck.f2fs looks the partition up in sysfs (coredomain may not read generic
+# sysfs) and checks it without
+dontaudit fsck sysfs:file r_file_perms;

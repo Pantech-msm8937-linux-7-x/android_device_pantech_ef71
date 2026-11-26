@@ -15,3 +15,16 @@ allow qti_init_shell sysfs_leds:file setattr;
 allow qti_init_shell configfs:dir create_dir_perms;
 allow qti_init_shell configfs:file create_file_perms;
 allow qti_init_shell configfs:lnk_file create_file_perms;
+
+# init.qcom.early_boot.sh reads the panel mode
+allow qti_init_shell sysfs_gpu:file r_file_perms;
+
+# init.ef71.wlan_mac.sh: the serial number from the kernel command line, the
+# MAC address set through ifconfig
+allow qti_init_shell proc_cmdline:file r_file_perms;
+allow qti_init_shell self:capability net_admin;
+allow qti_init_shell self:udp_socket { create ioctl };
+allowxperm qti_init_shell self:udp_socket ioctl { SIOCGIFFLAGS SIOCSIFFLAGS SIOCSIFHWADDR };
+
+# init.qcom.post_boot.sh sets the eMMC read-ahead
+allow qti_init_shell vendor_sysfs_read_ahead:file rw_file_perms;

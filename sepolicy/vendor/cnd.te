@@ -1,1 +1,3 @@
 get_prop(cnd, wifi_hal_prop);
+
+get_prop(cnd, vendor_data_app_prop)

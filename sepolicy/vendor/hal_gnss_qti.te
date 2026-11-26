@@ -1,0 +1,1 @@
+get_prop(hal_gnss_qti, boot_status_prop)

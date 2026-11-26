@@ -1,0 +1,3 @@
+# odrefresh walks all system properties for the dalvik.vm.* ones and opens
+# every property area on the way
+dontaudit odrefresh property_type:file { getattr map open read };

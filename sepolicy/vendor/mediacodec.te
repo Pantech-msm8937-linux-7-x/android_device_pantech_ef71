@@ -1,0 +1,2 @@
+# The v4l2 Codec2 service looks the venus video nodes up by name
+r_dir_file(mediacodec, sysfs_graphics)
