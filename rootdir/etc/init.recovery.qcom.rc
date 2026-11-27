@@ -26,7 +26,7 @@
 #
 
 on init
-    write /sys/class/backlight/panel0-backlight/brightness 200
+    write /sys/class/backlight/1a94000.dsi.0/brightness 200
 
     mkdir /config
     mount configfs none /config

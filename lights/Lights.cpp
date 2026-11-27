@@ -37,8 +37,10 @@ namespace light {
 
 namespace {
 
-constexpr const char* kLcdBrightness = "/sys/class/leds/lcd-backlight/brightness";
-constexpr const char* kLcdMaxBrightness = "/sys/class/leds/lcd-backlight/max_brightness";
+// The DCS backlight of the panel on DSI0, as the mainline panel driver
+// registers it (216 steps on the NT35695, 250 on the FT8716)
+constexpr const char* kLcdBrightness = "/sys/class/backlight/1a94000.dsi.0/brightness";
+constexpr const char* kLcdMaxBrightness = "/sys/class/backlight/1a94000.dsi.0/max_brightness";
 
 /*
  * The EF71 has one LP5523 for the front indicator (a left and a right RGB

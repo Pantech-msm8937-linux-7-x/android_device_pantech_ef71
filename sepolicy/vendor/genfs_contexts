@@ -24,6 +24,9 @@ genfscon sysfs /kernel/sdhci_msm	u:object_r:sysfs_kernel_sdhci_msm:s0
 # LP5523 (indicator and key backlights)
 genfscon sysfs /devices/platform/soc@0/7af8000.i2c/i2c-2/2-0032/leds				u:object_r:sysfs_leds:s0
 
+# The panel backlight the lights HAL sets
+genfscon sysfs /devices/platform/soc@0/1a00000.display-subsystem/1a94000.dsi/1a94000.dsi.0/backlight	u:object_r:sysfs_leds:s0
+
 # PMI8950 charger and fuel gauge, the extcon of the charger
 genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:smbchager@1000/power_supply	u:object_r:sysfs_batteryinfo:s0
 genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:fuel-gauge@4000/power_supply	u:object_r:sysfs_batteryinfo:s0
