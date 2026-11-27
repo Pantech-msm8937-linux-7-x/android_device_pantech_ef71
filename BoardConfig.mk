@@ -57,8 +57,10 @@ BOARD_KERNEL_CMDLINE += reboot=warm
 # GPU microcode in /vendor/firmware, remote processor images under its
 # image/ link to the modem partition
 BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware
-# No kernel log on the screen: fbcon stays off the first console, the one shown
-BOARD_KERNEL_CMDLINE += fbcon=vc:2-6
+# No fbdev: nothing touches the panel before the system does, so the
+# command mode NT35695 keeps the bootloader logo in its own frame memory up
+# to the boot animation, as on the stock kernels (no kernel log on it either)
+BOARD_KERNEL_CMDLINE += drm_kms_helper.fbdev_emulation=0
 # BAM-DMUX as the rmnet_bam devices netmgrd configures
 BOARD_KERNEL_CMDLINE += qcom_bam_dmux.rmnet_bam=1
 BOARD_KERNEL_IMAGE_NAME := Image.gz
