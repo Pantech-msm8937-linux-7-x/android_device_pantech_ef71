@@ -410,6 +410,7 @@ EF71_PRODUCT_PACKAGES += \
     hostapd \
     wificond \
     WifiOverlayEF71 \
+    SettingsOverlayEF71 \
     wpa_supplicant
 
 # The driver commands of wpa_supplicant (BOARD_WPA_SUPPLICANT_PRIVATE_LIB),

@@ -499,4 +499,28 @@
          or a single SIM device can have 1 phones/logical modems, but 2 physical slots (one eSIM
          and one pSIM) -->
     <integer name="config_num_physical_slots">1</integer>
+
+    <!-- The vibrator is an ERM motor, which barely spins up in less than
+         about 25 ms: keep the short feedback of the stock software, a bit
+         longer for the navigation buttons. -->
+    <integer-array name="config_longPressVibePattern">
+        <item>0</item>
+        <item>28</item>
+        <item>10</item>
+    </integer-array>
+
+    <integer-array name="config_virtualKeyVibePattern">
+        <item>0</item>
+        <item>35</item>
+        <item>8</item>
+    </integer-array>
+
+    <integer-array name="config_keyboardTapVibePattern">
+        <item>28</item>
+    </integer-array>
+
+    <integer-array name="config_clockTickVibePattern">
+        <item>0</item>
+        <item>20</item>
+    </integer-array>
 </resources>
