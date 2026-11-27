@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The LineageOS Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="zram_title">zram settings</string>
+    <string name="zram_summary">Compressed swap in RAM</string>
+    <string name="zram_size_title">zram size</string>
+    <string name="zram_size_summary_pending">%1$s, applied after a restart</string>
+    <string name="zram_usage_title">In use now</string>
+    <string name="zram_usage_summary">%1$s of %2$s, %3$s in memory after compression</string>
+    <string name="zram_usage_off">Off</string>
+    <string name="zram_footer">zram keeps the memory of the apps in the background, compressed, instead of closing them. A larger one keeps more apps open, at the cost of some processor time to compress them.</string>
+    <string name="zram_restart">Restart now</string>
+    <string name="zram_restart_message">The new size applies after a restart.</string>
+    <string name="zram_restart_later">Later</string>
+</resources>

@@ -1,1 +1,5 @@
 allow system_app fm_radio_device:chr_file r_file_perms;
+
+# zram settings: show the size and use of zram
+allow system_app sysfs_zram:dir search;
+allow system_app sysfs_zram:file r_file_perms;

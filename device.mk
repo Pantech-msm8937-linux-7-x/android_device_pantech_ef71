@@ -209,7 +209,11 @@ EF71_PRODUCT_PACKAGES += \
     init.qcom.sh \
     init.qcom.usb.sh \
     fstab.qcom \
-    fstab.qcom_ramdisk
+    fstab.qcom_ramdisk \
+    fstab.zram.2 \
+    fstab.zram.4 \
+    fstab.zram.6 \
+    fstab.zram.8
 
 # Modem: remote file systems and the TFTP server it reads its files from
 EF71_PRODUCT_PACKAGES += \
@@ -411,6 +415,7 @@ EF71_PRODUCT_PACKAGES += \
     wificond \
     WifiOverlayEF71 \
     SettingsOverlayEF71 \
+    ZramSettings \
     wpa_supplicant
 
 # The driver commands of wpa_supplicant (BOARD_WPA_SUPPLICANT_PRIVATE_LIB),

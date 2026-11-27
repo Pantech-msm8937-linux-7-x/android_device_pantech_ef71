@@ -104,3 +104,31 @@ sh_binary {
     src: "bin/init.ef71.apn.sh",
     vendor: true,
 }
+
+prebuilt_etc {
+    name: "fstab.zram.2",
+    src: "etc/fstab.zram.2",
+    sub_dir: "zram",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "fstab.zram.4",
+    src: "etc/fstab.zram.4",
+    sub_dir: "zram",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "fstab.zram.6",
+    src: "etc/fstab.zram.6",
+    sub_dir: "zram",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "fstab.zram.8",
+    src: "etc/fstab.zram.8",
+    sub_dir: "zram",
+    vendor: true,
+}

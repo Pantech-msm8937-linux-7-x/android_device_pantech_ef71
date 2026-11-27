@@ -20,5 +20,3 @@
 /dev/block/by-name/modem                                /vendor/firmware_mnt    vfat    ro,context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337 wait
 /devices/platform/soc@0/7864900.mmc/mmc_host*           auto                    auto    defaults                                                                        wait,voldmanaged=sdcard1:auto,noemulatedsd
 /devices/platform/soc@0/78db000.usb/ci_hdrc.0/usb*       auto                    auto    defaults                                                                        wait,voldmanaged=usb:auto
-# 4 GiB; the kernel has no max_comp_streams any more (one stream per CPU)
-/dev/block/zram0                                        none                    swap    defaults                                                                        zramsize=4294967296,max_comp_streams=-1

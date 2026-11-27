@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The LineageOS Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="zram_title">zram 설정</string>
+    <string name="zram_summary">RAM 안에 압축해 두는 가상 메모리</string>
+    <string name="zram_size_title">zram 크기</string>
+    <string name="zram_size_summary_pending">%1$s, 다시 시작하면 적용됩니다</string>
+    <string name="zram_usage_title">현재 사용량</string>
+    <string name="zram_usage_summary">%2$s 중 %1$s 사용, 압축 후 메모리 %3$s</string>
+    <string name="zram_usage_off">꺼짐</string>
+    <string name="zram_footer">zram은 백그라운드 앱의 메모리를 닫지 않고 압축해 둡니다. 크게 잡으면 더 많은 앱이 열린 채로 남지만, 압축에 프로세서 시간이 조금 더 듭니다.</string>
+    <string name="zram_restart">지금 다시 시작</string>
+    <string name="zram_restart_message">새 크기는 다시 시작한 뒤에 적용됩니다.</string>
+    <string name="zram_restart_later">나중에</string>
+</resources>
