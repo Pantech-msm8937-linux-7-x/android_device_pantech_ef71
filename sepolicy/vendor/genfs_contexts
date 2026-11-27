@@ -37,6 +37,7 @@ genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-00/200f000.spmi:pmi
 genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-00/200f000.spmi:pmic@0:rtc@6000/rtc/rtc0/alarmtimer.0.auto/wakeup	u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-00/200f000.spmi:pmic@0:pon@800/200f000.spmi:pmic@0:pon@800:pwrkey/wakeup	u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:smbchager@1000/power_supply/qcom-smbchg-usb/wakeup	u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:smbchager@1000/wakeup	u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:smbchager@1000/power_supply/qcom-smbchg-dc/wakeup	u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/soc@0/200f000.spmi/spmi-0/0-02/200f000.spmi:pmic@2:fuel-gauge@4000/power_supply/qcom-battery/wakeup	u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/soc@0/4a9000.thermal-sensor/wakeup				u:object_r:sysfs_wakeup:s0
